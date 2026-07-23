@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Use — Global.Time.Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#f6efe1; --bg-2:#efe2c8;
+    --ink:#2b2418; --ink-muted:#7d715c;
+    --card:rgba(246,239,225,0.96); --card-border:rgba(43,36,24,0.14);
+    --terracotta:#c85a30; --teal:#2f6f5e; --terracotta-dim:rgba(200,90,48,0.25);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse 55% 35% at 10% -5%, rgba(200,90,48,0.10), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 100% 0%, rgba(47,111,94,0.10), transparent 60%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2) 60%, var(--bg-1) 100%);
+    color:var(--ink); font-family:'Space Grotesk', sans-serif; min-height:100vh;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:56px 24px 80px; position:relative; z-index:1;}
+  nav{display:flex; align-items:center; justify-content:space-between; margin-bottom:40px;}
+  .brand{font-family:'DM Serif Display',serif; font-weight:700; font-size:20px; letter-spacing:-0.01em; text-decoration:none; color:var(--ink);}
+  .brand em{color:var(--terracotta); font-style:normal;}
+  .lang-toggle{display:flex; background:rgba(0,0,0,0.25); border-radius:10px; padding:4px; gap:2px;}
+  .lang-toggle button{border:none; background:transparent; color:var(--ink-muted); font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; padding:7px 14px; border-radius:7px; cursor:pointer;}
+  .lang-toggle button.active{background:var(--terracotta); color:#241a05;}
+  h1{font-family:'DM Serif Display', serif; font-weight:600; font-size:clamp(28px, 4.5vw, 42px); line-height:1.1; margin:0 0 8px;}
+  .lede{color:var(--ink-muted); margin:0 0 40px; line-height:1.6;}
+  .panel{background:var(--card); border:1px solid var(--card-border); border-radius:20px; padding:30px; margin-bottom:18px;}
+  .panel h2{font-family:'DM Serif Display',serif; font-weight:600; font-size:19px; margin:0 0 12px; color:var(--teal);}
+  .panel p{color:var(--ink-muted); line-height:1.7; font-size:15px; margin:0 0 14px;}
+  .panel p:last-child{margin-bottom:0;}
+  .note{font-size:13px; color:var(--ink-muted); border-left:2px solid var(--terracotta-dim); padding-left:14px; margin-top:8px;}
+  .back-link{display:inline-block; margin-top:10px; color:var(--terracotta); font-size:14px; text-decoration:none;}
+  .back-link:hover{text-decoration:underline;}
+  @media (max-width:520px){ .panel{padding:22px;} nav{flex-direction:column; gap:14px; align-items:flex-start;} }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="brand" href="exact-time.html">Global<em>.Time.Hub</em></a>
+    <div class="lang-toggle">
+      <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+      <button id="btn-el" onclick="setLang('el')">ΕΛ</button>
+    </div>
+  </nav>
+
+  <h1 data-i18n="h1">Terms of Use</h1>
+  <p class="lede" data-i18n="lede">The rules for using Global.Time.Hub, in plain language.</p>
+
+  <div id="sections"></div>
+
+  <div class="panel"><p class="note" data-i18n="disclaimer"></p></div>
+
+  <a class="back-link" data-i18n="back" href="exact-time.html">← Back to the clock</a>
+</div>
+
+<script>
+const I18N = {
+en: {
+  h1: 'Terms of Use',
+  lede: 'The rules for using Global.Time.Hub, in plain language.',
+  back: '← Back to the clock',
+  disclaimer: "This page is a general-purpose template and is provided for informational structure only — it is not legal advice, and it has not been drafted or reviewed by a lawyer for any specific jurisdiction or business. If you plan to rely on terms like these for a real, live website, have them reviewed by a qualified legal professional first.",
+  sections: [
+    ['1. Acceptance of these terms',
+      "By opening or using Global.Time.Hub (\"the site\", \"the clock\", \"we\", \"us\"), you agree to these Terms of Use. If you don't agree with any part of them, the only remedy available to you is to stop using the site. We may update these terms from time to time, and continuing to use the site after an update means you accept the revised terms."],
+    ['2. What this site is for',
+      "Global.Time.Hub is a free, browser-based world clock that shows the current time in a range of major cities and countries. It's intended for personal, non-commercial reference — a quick lookup tool, not a certified or legally binding timekeeping service."],
+    ['3. Not an authoritative time source',
+      "The times shown are calculated using your device's own time zone data and clock. We don't guarantee millisecond-level precision, and we're not a substitute for official or atomic-clock timekeeping services where exact legal or scientific precision is required."],
+    ['4. Accuracy of information',
+      "We try to keep the time zone data and calculations on this site accurate and up to date, including handling of daylight saving changes, but we make no guarantee, express or implied, that any of it is complete, error-free, or suitable for a particular purpose. Your use of any information here is at your own risk."],
+    ['5. Acceptable use',
+      "You agree not to use the site in any way that could damage, disable, or impair it, attempt to gain unauthorized access to its underlying code or infrastructure, or use automated tools to scrape or overload the service. You also agree not to use the site for any unlawful purpose."],
+    ['6. Intellectual property',
+      "The design, layout, original illustrations, text, and code of this site belong to Global.Time.Hub unless otherwise noted. You're welcome to use the clock for your own personal purposes, but reproducing the site's design, illustrations, or content elsewhere without permission isn't allowed."],
+    ['7. Third-party links and services',
+      "This site may link to or load resources from third parties (for example, web fonts). We don't control those third parties and aren't responsible for their content, availability, or practices. Visiting a linked external site is done at your own discretion."],
+    ['8. Limitation of liability',
+      "To the fullest extent permitted by law, Global.Time.Hub and anyone involved in creating or maintaining it won't be liable for any indirect, incidental, or consequential damages arising from your use of, or inability to use, the site — including any decisions made based on the times shown."],
+    ['9. Changes to the service',
+      "We may change, suspend, or discontinue any part of the site at any time, without notice, and without liability for doing so."],
+    ['10. Governing law',
+      "These terms are governed by general principles of contract law in the jurisdiction where the site operator is based, without regard to conflict-of-law rules. If a specific governing law and venue apply to your situation, they should be filled in here before this page is used in production."],
+    ['11. Contact',
+      "Questions about these terms can be sent to the contact address listed in the site footer or, if none is listed yet, through whatever contact channel is set up before this page goes live."],
+  ]
+},
+el: {
+  h1: 'Όροι Χρήσης',
+  lede: 'Οι κανόνες χρήσης του Global.Time.Hub, σε απλή γλώσσα.',
+  back: '← Πίσω στο ρολόι',
+  disclaimer: "Αυτή η σελίδα είναι ένα γενικό υπόδειγμα και παρέχεται μόνο ως ενδεικτική δομή — δεν αποτελεί νομική συμβουλή και δεν έχει συνταχθεί ή ελεγχθεί από δικηγόρο για κάποια συγκεκριμένη δικαιοδοσία ή επιχείρηση. Αν σκοπεύεις να βασιστείς σε τέτοιους όρους για μια πραγματική, ενεργή ιστοσελίδα, φρόντισε πρώτα να τους ελέγξει ειδικευμένος νομικός σύμβουλος.",
+  sections: [
+    ['1. Αποδοχή των όρων',
+      "Χρησιμοποιώντας το Global.Time.Hub («η σελίδα», «το ρολόι», «εμείς»), αποδέχεσαι τους παρόντες Όρους Χρήσης. Αν δεν συμφωνείς με κάποιο μέρος τους, η μόνη διαθέσιμη λύση είναι να σταματήσεις να χρησιμοποιείς τη σελίδα. Μπορεί να ενημερώνουμε τους όρους κατά καιρούς, και η συνέχιση της χρήσης μετά από μια ενημέρωση σημαίνει πως αποδέχεσαι τους αναθεωρημένους όρους."],
+    ['2. Σε τι χρησιμεύει η σελίδα',
+      "Το Global.Time.Hub είναι ένα δωρεάν, browser-based παγκόσμιο ρολόι που δείχνει την τρέχουσα ώρα σε μια σειρά μεγάλων πόλεων και χωρών. Προορίζεται για προσωπική, μη εμπορική χρήση — ως εργαλείο γρήγορης αναζήτησης, όχι ως πιστοποιημένη ή νομικά δεσμευτική υπηρεσία χρονομέτρησης."],
+    ['3. Όχι επίσημη πηγή ώρας',
+      "Οι ώρες που εμφανίζονται υπολογίζονται με βάση τα δεδομένα ζώνης ώρας και το ρολόι της δικής σου συσκευής. Δεν εγγυόμαστε ακρίβεια σε επίπεδο χιλιοστού δευτερολέπτου, και δεν υποκαθιστούμε επίσημες υπηρεσίες χρονομέτρησης ατομικού ρολογιού όπου απαιτείται ακριβής νομική ή επιστημονική ακρίβεια."],
+    ['4. Ακρίβεια των πληροφοριών',
+      "Προσπαθούμε να διατηρούμε τα δεδομένα ζωνών ώρας και τους υπολογισμούς σε αυτή τη σελίδα ακριβή και ενημερωμένα, συμπεριλαμβανομένου του χειρισμού αλλαγών θερινής ώρας, όμως δεν εγγυόμαστε, ρητά ή σιωπηρά, ότι είναι πλήρη, χωρίς σφάλματα, ή κατάλληλα για συγκεκριμένο σκοπό. Η χρήση οποιασδήποτε πληροφορίας εδώ γίνεται με δική σου ευθύνη."],
+    ['5. Αποδεκτή χρήση',
+      "Συμφωνείς να μη χρησιμοποιείς τη σελίδα με τρόπο που θα μπορούσε να τη βλάψει, να την απενεργοποιήσει ή να την υποβαθμίσει, να μην επιχειρήσεις μη εξουσιοδοτημένη πρόσβαση στον υποκείμενο κώδικα ή την υποδομή της, και να μη χρησιμοποιήσεις αυτοματοποιημένα εργαλεία για scraping ή υπερφόρτωση της υπηρεσίας. Επίσης συμφωνείς να μη χρησιμοποιείς τη σελίδα για παράνομο σκοπό."],
+    ['6. Πνευματική ιδιοκτησία',
+      "Ο σχεδιασμός, η διάταξη, οι πρωτότυπες εικονογραφήσεις, το κείμενο και ο κώδικας αυτής της σελίδας ανήκουν στο Global.Time.Hub, εκτός αν αναφέρεται διαφορετικά. Μπορείς ελεύθερα να χρησιμοποιείς το ρολόι για προσωπικούς σκοπούς, όμως η αναπαραγωγή του σχεδιασμού, των εικονογραφήσεων ή του περιεχομένου της σελίδας αλλού χωρίς άδεια δεν επιτρέπεται."],
+    ['7. Σύνδεσμοι και υπηρεσίες τρίτων',
+      "Αυτή η σελίδα μπορεί να συνδέεται με ή να φορτώνει πόρους από τρίτους (π.χ. web fonts). Δεν ελέγχουμε αυτούς τους τρίτους και δεν είμαστε υπεύθυνοι για το περιεχόμενο, τη διαθεσιμότητα ή τις πρακτικές τους. Η επίσκεψη σε εξωτερικό σύνδεσμο γίνεται με δική σου κρίση."],
+    ['8. Περιορισμός ευθύνης',
+      "Στον μέγιστο βαθμό που επιτρέπει ο νόμος, το Global.Time.Hub και όσοι εμπλέκονται στη δημιουργία ή τη συντήρησή του δεν φέρουν ευθύνη για έμμεσες, τυχαίες ή παρεπόμενες ζημίες που προκύπτουν από τη χρήση ή την αδυναμία χρήσης της σελίδας — συμπεριλαμβανομένων αποφάσεων που βασίστηκαν στις ώρες που εμφανίζονται."],
+    ['9. Αλλαγές στην υπηρεσία',
+      "Μπορούμε να αλλάξουμε, να αναστείλουμε ή να διακόψουμε οποιοδήποτε μέρος της σελίδας ανά πάσα στιγμή, χωρίς προειδοποίηση και χωρίς ευθύνη γι' αυτό."],
+    ['10. Εφαρμοστέο δίκαιο',
+      "Οι παρόντες όροι διέπονται από τις γενικές αρχές του δικαίου των συμβάσεων της δικαιοδοσίας όπου εδρεύει ο διαχειριστής της σελίδας, χωρίς αναφορά σε κανόνες σύγκρουσης δικαίου. Αν ισχύει συγκεκριμένο εφαρμοστέο δίκαιο και δικαιοδοσία για την περίπτωσή σου, θα πρέπει να συμπληρωθούν εδώ πριν η σελίδα τεθεί σε πραγματική λειτουργία."],
+    ['11. Επικοινωνία',
+      "Ερωτήσεις σχετικά με αυτούς τους όρους μπορούν να σταλούν στη διεύθυνση επικοινωνίας που αναφέρεται στο footer της σελίδας ή, αν δεν υπάρχει ακόμα, μέσω όποιου καναλιού επικοινωνίας οριστεί πριν τεθεί η σελίδα σε λειτουργία."],
+  ]
+}
+};
+
+let lang = 'en';
+function renderStatic(){
+  const t = I18N[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.getElementById('sections').innerHTML = t.sections.map(s =>
+    `<div class="panel"><h2>${s[0]}</h2><p>${s[1]}</p></div>`).join('');
+  document.getElementById('html-root').lang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.getElementById('btn-el').classList.toggle('active', lang==='el');
+}
+function setLang(l){ lang = l; renderStatic(); }
+renderStatic();
+</script>
+</body>
+</html>

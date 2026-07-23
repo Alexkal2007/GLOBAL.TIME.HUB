@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Global.Time.Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#f6efe1; --bg-2:#efe2c8;
+    --ink:#2b2418; --ink-muted:#7d715c;
+    --card:rgba(246,239,225,0.96); --card-border:rgba(43,36,24,0.14);
+    --terracotta:#c85a30; --teal:#2f6f5e; --terracotta-dim:rgba(200,90,48,0.25);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse 55% 35% at 10% -5%, rgba(200,90,48,0.10), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 100% 0%, rgba(47,111,94,0.10), transparent 60%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2) 60%, var(--bg-1) 100%);
+    color:var(--ink); font-family:'Space Grotesk', sans-serif; min-height:100vh;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:56px 24px 80px; position:relative; z-index:1;}
+  nav{display:flex; align-items:center; justify-content:space-between; margin-bottom:40px;}
+  .brand{font-family:'DM Serif Display',serif; font-weight:700; font-size:20px; letter-spacing:-0.01em; text-decoration:none; color:var(--ink);}
+  .brand em{color:var(--terracotta); font-style:normal;}
+  .lang-toggle{display:flex; background:rgba(0,0,0,0.25); border-radius:10px; padding:4px; gap:2px;}
+  .lang-toggle button{border:none; background:transparent; color:var(--ink-muted); font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; padding:7px 14px; border-radius:7px; cursor:pointer;}
+  .lang-toggle button.active{background:var(--terracotta); color:#241a05;}
+  h1{font-family:'DM Serif Display', serif; font-weight:600; font-size:clamp(28px, 4.5vw, 42px); line-height:1.1; margin:0 0 8px;}
+  .lede{color:var(--ink-muted); margin:0 0 40px; line-height:1.6;}
+  .panel{background:var(--card); border:1px solid var(--card-border); border-radius:20px; padding:30px; margin-bottom:18px;}
+  .panel h2{font-family:'DM Serif Display',serif; font-weight:600; font-size:19px; margin:0 0 12px; color:var(--teal);}
+  .panel p{color:var(--ink-muted); line-height:1.7; font-size:15px; margin:0 0 14px;}
+  .panel p:last-child{margin-bottom:0;}
+  .note{font-size:13px; color:var(--ink-muted); border-left:2px solid var(--terracotta-dim); padding-left:14px; margin-top:8px;}
+  .back-link{display:inline-block; margin-top:10px; color:var(--terracotta); font-size:14px; text-decoration:none;}
+  .back-link:hover{text-decoration:underline;}
+  @media (max-width:520px){ .panel{padding:22px;} nav{flex-direction:column; gap:14px; align-items:flex-start;} }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="brand" href="exact-time.html">Global<em>.Time.Hub</em></a>
+    <div class="lang-toggle">
+      <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+      <button id="btn-el" onclick="setLang('el')">ΕΛ</button>
+    </div>
+  </nav>
+
+  <h1 data-i18n="h1">Privacy Policy</h1>
+  <p class="lede" data-i18n="lede">What Global.Time.Hub does — and doesn't — do with your information.</p>
+
+  <div id="sections"></div>
+
+  <div class="panel"><p class="note" data-i18n="disclaimer"></p></div>
+
+  <a class="back-link" data-i18n="back" href="exact-time.html">← Back to the clock</a>
+</div>
+
+<script>
+const I18N = {
+en: {
+  h1: 'Privacy Policy',
+  lede: "What Global.Time.Hub does — and doesn't — do with your information.",
+  back: '← Back to the clock',
+  disclaimer: "This page is a general-purpose privacy policy template, meant to illustrate the structure such a policy usually has. It is not legal advice, and it doesn't reflect the specific data practices, analytics tools, or legal obligations (such as GDPR or CCPA requirements) of any particular deployment. Before publishing a real privacy policy, have it reviewed by a qualified legal professional and matched to what the site actually does.",
+  sections: [
+    ['Overview',
+      "This Privacy Policy explains what information Global.Time.Hub collects when you use the clock, how that information is used, and what choices you have. The short version: the clock itself needs no personal information to work, and the country you look up is never stored or sent anywhere."],
+    ['Information we don\'t collect',
+      "There's no account system, no sign-up, and no login. We don't ask for your name, email address, or any personal identifier to use the world clock. Which countries you click, and when, are handled entirely inside your own browser and are never transmitted to a server or saved after you close or refresh the page."],
+    ['Information collected automatically',
+      "Like most websites, the underlying hosting infrastructure may automatically log basic technical information when you visit — for example, an IP address, browser type, device type, and the pages requested. This kind of server log data is standard practice for keeping a site secure and functioning, and it isn't linked to which countries you looked up."],
+    ['Cookies',
+      "This site keeps things minimal on the cookie front. Any cookies in use would typically fall into two categories: strictly necessary cookies (needed for the site to function, such as remembering your selected language) and, if added later, optional analytics cookies used to understand traffic patterns. See our Cookie Policy for a fuller explanation and how to control them."],
+    ['Third-party services',
+      "This site loads web fonts from Google Fonts to display its typography. Loading a font may involve a request to Google's servers, which operates under its own privacy policy. We don't run advertising networks or sell any information to third parties."],
+    ['Data retention',
+      "Because we don't collect personal data about which times or countries you look up, there's nothing tied to your usage to retain or delete. Any generic server logs are kept only as long as needed for security and operational purposes, then routinely cleared."],
+    ['Your rights',
+      "Depending on where you're located, you may have rights to access, correct, or request deletion of personal data a website holds about you. Since this clock doesn't collect or store personal data tied to your use of it, there is typically nothing tool-specific to request. For anything related to general site logs, use the contact details on the Terms of Use page."],
+    ['Children\'s privacy',
+      "This site is not directed at children and does not knowingly collect personal information from children. If you believe a child has provided personal information through this site, please get in touch so it can be addressed."],
+    ['Changes to this policy',
+      "We may update this Privacy Policy from time to time to reflect changes in how the site works or in applicable law. The date of the most recent version would normally appear here once this page is finalized for production."],
+    ['Contact',
+      "Questions about this Privacy Policy can be directed to the contact details listed on the Terms of Use page."],
+  ]
+},
+el: {
+  h1: 'Πολιτική Απορρήτου',
+  lede: 'Τι κάνει — και τι δεν κάνει — το Global.Time.Hub με τις πληροφορίες σου.',
+  back: '← Πίσω στο ρολόι',
+  disclaimer: "Αυτή η σελίδα είναι ένα γενικό υπόδειγμα πολιτικής απορρήτου, που σκοπό έχει να δείξει τη συνηθισμένη δομή μιας τέτοιας πολιτικής. Δεν αποτελεί νομική συμβουλή και δεν αντικατοπτρίζει τις συγκεκριμένες πρακτικές δεδομένων, εργαλεία analytics, ή νομικές υποχρεώσεις (όπως GDPR ή CCPA) κάποιας συγκεκριμένης εφαρμογής. Πριν δημοσιεύσεις πραγματική πολιτική απορρήτου, φρόντισε να την ελέγξει ειδικευμένος νομικός σύμβουλος και να ταιριάζει με ό,τι πραγματικά κάνει η σελίδα.",
+  sections: [
+    ['Επισκόπηση',
+      "Αυτή η Πολιτική Απορρήτου εξηγεί ποιες πληροφορίες συλλέγει το Global.Time.Hub όταν χρησιμοποιείς το ρολόι, πώς χρησιμοποιούνται αυτές οι πληροφορίες, και ποιες επιλογές έχεις. Με λίγα λόγια: το ίδιο το ρολόι δεν χρειάζεται προσωπικά δεδομένα για να λειτουργήσει, και η χώρα που αναζητάς δεν αποθηκεύεται ή στέλνεται ποτέ πουθενά."],
+    ['Πληροφορίες που δεν συλλέγουμε',
+      "Δεν υπάρχει σύστημα λογαριασμού, δεν υπάρχει εγγραφή, δεν υπάρχει login. Δεν ζητάμε όνομα, email ή οποιοδήποτε προσωπικό αναγνωριστικό για να χρησιμοποιήσεις το παγκόσμιο ρολόι. Ποιες χώρες πατάς, και πότε, διαχειρίζονται εξ ολοκλήρου μέσα στον browser σου και δεν μεταδίδονται ποτέ σε server, ούτε αποθηκεύονται μετά το κλείσιμο ή το refresh της σελίδας."],
+    ['Πληροφορίες που συλλέγονται αυτόματα',
+      "Όπως οι περισσότερες ιστοσελίδες, η υποδομή φιλοξενίας μπορεί να καταγράφει αυτόματα βασικές τεχνικές πληροφορίες όταν επισκέπτεσαι τη σελίδα — για παράδειγμα, διεύθυνση IP, τύπο browser, τύπο συσκευής και τις σελίδες που ζητήθηκαν. Αυτού του είδους τα server logs είναι συνήθης πρακτική για την ασφάλεια και τη λειτουργία μιας σελίδας, και δεν συνδέονται με τις χώρες που αναζήτησες."],
+    ['Cookies',
+      "Αυτή η σελίδα κρατάει τα πράγματα στο ελάχιστο όσον αφορά τα cookies. Όποια cookies χρησιμοποιούνται θα ενέπιπταν συνήθως σε δύο κατηγορίες: απολύτως απαραίτητα cookies (χρειάζονται για να λειτουργεί η σελίδα, π.χ. να θυμάται τη γλώσσα που επέλεξες) και, αν προστεθούν αργότερα, προαιρετικά cookies analytics για την κατανόηση της επισκεψιμότητας. Δες την Πολιτική Cookies για πληρέστερη εξήγηση και το πώς να τα ελέγξεις."],
+    ['Υπηρεσίες τρίτων',
+      "Αυτή η σελίδα φορτώνει web fonts από το Google Fonts για την εμφάνιση της τυπογραφίας της. Η φόρτωση μιας γραμματοσειράς μπορεί να περιλαμβάνει αίτημα προς τους servers της Google, η οποία λειτουργεί με τη δική της πολιτική απορρήτου. Δεν λειτουργούμε διαφημιστικά δίκτυα ούτε πουλάμε πληροφορίες σε τρίτους."],
+    ['Διατήρηση δεδομένων',
+      "Επειδή δεν συλλέγουμε προσωπικά δεδομένα σχετικά με το ποιες ώρες ή χώρες αναζητάς, δεν υπάρχει τίποτα συνδεδεμένο με τη χρήση σου προς διατήρηση ή διαγραφή. Τα γενικά server logs διατηρούνται μόνο όσο χρειάζεται για λόγους ασφάλειας και λειτουργίας, και στη συνέχεια διαγράφονται τακτικά."],
+    ['Τα δικαιώματά σου',
+      "Ανάλογα με το πού βρίσκεσαι, μπορεί να έχεις δικαιώματα πρόσβασης, διόρθωσης ή αίτησης διαγραφής προσωπικών δεδομένων που κατέχει μια ιστοσελίδα για εσένα. Επειδή αυτό το ρολόι δεν συλλέγει ή αποθηκεύει προσωπικά δεδομένα συνδεδεμένα με τη χρήση του, συνήθως δεν υπάρχει κάτι συγκεκριμένο προς αίτηση. Για οτιδήποτε σχετικό με γενικά logs της σελίδας, χρησιμοποίησε τα στοιχεία επικοινωνίας στη σελίδα Όροι Χρήσης."],
+    ['Απόρρητο ανηλίκων',
+      "Αυτή η σελίδα δεν απευθύνεται σε παιδιά και δεν συλλέγει εν γνώσει της προσωπικά δεδομένα από παιδιά. Αν πιστεύεις πως κάποιο παιδί έχει δώσει προσωπικά δεδομένα μέσω αυτής της σελίδας, επικοινώνησε ώστε να αντιμετωπιστεί κατάλληλα."],
+    ['Αλλαγές σε αυτή την πολιτική',
+      "Μπορεί να ενημερώνουμε αυτή την Πολιτική Απορρήτου κατά καιρούς ώστε να αντικατοπτρίζει αλλαγές στον τρόπο λειτουργίας της σελίδας ή στην ισχύουσα νομοθεσία. Η ημερομηνία της πιο πρόσφατης έκδοσης θα εμφανιζόταν κανονικά εδώ μόλις η σελίδα οριστικοποιηθεί για πραγματική χρήση."],
+    ['Επικοινωνία',
+      "Ερωτήσεις σχετικά με αυτή την Πολιτική Απορρήτου μπορούν να απευθύνονται στα στοιχεία επικοινωνίας που αναφέρονται στη σελίδα Όροι Χρήσης."],
+  ]
+}
+};
+
+let lang = 'en';
+function renderStatic(){
+  const t = I18N[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.getElementById('sections').innerHTML = t.sections.map(s =>
+    `<div class="panel"><h2>${s[0]}</h2><p>${s[1]}</p></div>`).join('');
+  document.getElementById('html-root').lang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.getElementById('btn-el').classList.toggle('active', lang==='el');
+}
+function setLang(l){ lang = l; renderStatic(); }
+renderStatic();
+</script>
+</body>
+</html>

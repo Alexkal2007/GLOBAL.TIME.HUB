@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — Global.Time.Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#f6efe1; --bg-2:#efe2c8;
+    --ink:#2b2418; --ink-muted:#7d715c;
+    --card:rgba(246,239,225,0.96); --card-border:rgba(43,36,24,0.14);
+    --terracotta:#c85a30; --teal:#2f6f5e; --terracotta-dim:rgba(200,90,48,0.25);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse 55% 35% at 10% -5%, rgba(200,90,48,0.10), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 100% 0%, rgba(47,111,94,0.10), transparent 60%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2) 60%, var(--bg-1) 100%);
+    color:var(--ink); font-family:'Space Grotesk', sans-serif; min-height:100vh;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:56px 24px 80px; position:relative; z-index:1;}
+  nav{display:flex; align-items:center; justify-content:space-between; margin-bottom:40px;}
+  .brand{font-family:'DM Serif Display',serif; font-weight:700; font-size:20px; letter-spacing:-0.01em; text-decoration:none; color:var(--ink);}
+  .brand em{color:var(--terracotta); font-style:normal;}
+  .lang-toggle{display:flex; background:rgba(0,0,0,0.25); border-radius:10px; padding:4px; gap:2px;}
+  .lang-toggle button{border:none; background:transparent; color:var(--ink-muted); font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; padding:7px 14px; border-radius:7px; cursor:pointer;}
+  .lang-toggle button.active{background:var(--terracotta); color:#241a05;}
+  h1{font-family:'DM Serif Display', serif; font-weight:600; font-size:clamp(28px, 4.5vw, 42px); line-height:1.1; margin:0 0 8px;}
+  .lede{color:var(--ink-muted); margin:0 0 40px; line-height:1.6;}
+  .panel{background:var(--card); border:1px solid var(--card-border); border-radius:20px; padding:30px; margin-bottom:18px;}
+  .panel h2{font-family:'DM Serif Display',serif; font-weight:600; font-size:19px; margin:0 0 12px; color:var(--teal);}
+  .panel p{color:var(--ink-muted); line-height:1.7; font-size:15px; margin:0 0 14px;}
+  .panel p:last-child{margin-bottom:0;}
+  .back-link{display:inline-block; margin-top:10px; color:var(--terracotta); font-size:14px; text-decoration:none;}
+  .back-link:hover{text-decoration:underline;}
+  @media (max-width:520px){ .panel{padding:22px;} nav{flex-direction:column; gap:14px; align-items:flex-start;} }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="brand" href="exact-time.html">Global<em>.Time.Hub</em></a>
+    <div class="lang-toggle">
+      <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+      <button id="btn-el" onclick="setLang('el')">ΕΛ</button>
+    </div>
+  </nav>
+
+  <h1 data-i18n="h1">About Us</h1>
+  <p class="lede" data-i18n="lede">Who's behind Global.Time.Hub, and why it exists.</p>
+
+  <div id="sections"></div>
+
+  <a class="back-link" data-i18n="back" href="exact-time.html">← Back to the clock</a>
+</div>
+
+<script>
+const I18N = {
+en: {
+  h1: 'About Us',
+  lede: "Who's behind Global.Time.Hub, and why it exists.",
+  back: '← Back to the clock',
+  sections: [
+    ['Our mission',
+      "Global.Time.Hub exists to answer one small but surprisingly common question fast: what time is it, right now, somewhere else in the world? Instead of doing mental math with UTC offsets and daylight-saving rules, you get a live, accurate clock for dozens of major cities with a single click, plus a quick sense of how far ahead or behind that place is compared to you."],
+    ['What the site actually does',
+      "Every clock on this site is calculated live in your own browser, using your device's built-in time zone database — the same data your phone or computer already relies on for its own clock. That means the times shown automatically account for daylight saving changes without needing a manual update from us. Nothing about the country you pick or the time you view is sent to a server."],
+    ['Why the little illustrations',
+      "When you select a country, a colored panel and a simple illustrated landmark appear behind the clock, inspired by something recognizable about that place. These are original, simplified line illustrations we created ourselves — not photographs — partly for style, and partly because we didn't want to publish real photographs we don't hold the rights to."],
+    ['Our approach',
+      "No accounts, no sign-up, no tracking of which countries you look up over time. The tool is meant to be fast and disposable: open it, get your answer, move on. We also don't claim perfect precision down to the millisecond — for that, dedicated atomic-clock services exist — this is meant as a quick, everyday reference."],
+    ['Who we are',
+      "Global.Time.Hub is an independent, small-scale project, not an official timekeeping authority or a government service. Time zone identifiers and daylight-saving rules are based on the standard IANA time zone database used across the software industry."],
+    ['Get in touch',
+      "Questions, corrections, or a city you'd like added? Reach out through the contact details listed on our Terms of Use page."],
+  ]
+},
+el: {
+  h1: 'Σχετικά με εμάς',
+  lede: 'Ποιοι φτιάξαμε το Global.Time.Hub, και γιατί υπάρχει.',
+  back: '← Πίσω στο ρολόι',
+  sections: [
+    ['Ο σκοπός μας',
+      "Το Global.Time.Hub υπάρχει για να απαντάει γρήγορα σε μια μικρή αλλά εκπληκτικά συχνή ερώτηση: τι ώρα είναι αυτή τη στιγμή, κάπου αλλού στον κόσμο; Αντί να κάνεις νοερούς υπολογισμούς με διαφορές UTC και κανόνες θερινής ώρας, παίρνεις ένα ζωντανό, ακριβές ρολόι για δεκάδες μεγάλες πόλεις με ένα μόνο κλικ, μαζί με μια γρήγορη εικόνα για το πόσο μπροστά ή πίσω βρίσκεται εκείνο το μέρος σε σχέση με εσένα."],
+    ['Τι κάνει πραγματικά η σελίδα',
+      "Κάθε ρολόι σε αυτή τη σελίδα υπολογίζεται ζωντανά μέσα στον δικό σου browser, χρησιμοποιώντας την ενσωματωμένη βάση ζωνών ώρας της συσκευής σου — την ίδια που ήδη χρησιμοποιεί το κινητό ή ο υπολογιστής σου για το δικό του ρολόι. Αυτό σημαίνει πως οι ώρες που εμφανίζονται λαμβάνουν αυτόματα υπόψη τις αλλαγές θερινής ώρας χωρίς να χρειάζεται δική μας χειροκίνητη ενημέρωση. Καμία πληροφορία για τη χώρα που επιλέγεις ή την ώρα που βλέπεις δεν στέλνεται σε server."],
+    ['Γιατί οι μικρές εικόνες',
+      "Όταν επιλέγεις μια χώρα, εμφανίζεται πίσω από το ρολόι ένα έγχρωμο φόντο και μια απλή εικονογραφημένη σιλουέτα ενός αναγνωρίσιμου τοπόσημου. Πρόκειται για πρωτότυπες, απλοποιημένες σχεδιαστικές απεικονίσεις που φτιάξαμε εμείς — όχι φωτογραφίες — εν μέρει για αισθητικούς λόγους, και εν μέρει επειδή δεν θέλαμε να δημοσιεύσουμε πραγματικές φωτογραφίες στις οποίες δεν έχουμε δικαιώματα."],
+    ['Η προσέγγισή μας',
+      "Δεν υπάρχουν λογαριασμοί, εγγραφή, ή καταγραφή των χωρών που αναζητάς με την πάροδο του χρόνου. Το εργαλείο σκοπεύει να είναι γρήγορο και «μιας χρήσης»: το ανοίγεις, παίρνεις την απάντησή σου, συνεχίζεις. Επίσης δεν ισχυριζόμαστε τέλεια ακρίβεια στο χιλιοστό του δευτερολέπτου — για αυτό υπάρχουν εξειδικευμένες υπηρεσίες ατομικού ρολογιού — αυτό είναι για γρήγορη, καθημερινή αναφορά."],
+    ['Ποιοι είμαστε',
+      "Το Global.Time.Hub είναι ένα ανεξάρτητο, μικρής κλίμακας project, όχι επίσημη αρχή χρονομέτρησης ή κρατική υπηρεσία. Τα αναγνωριστικά ζωνών ώρας και οι κανόνες θερινής ώρας βασίζονται στην τυπική βάση δεδομένων ζωνών ώρας IANA που χρησιμοποιείται σε όλο τον κλάδο του λογισμικού."],
+    ['Επικοινωνία',
+      "Ερωτήσεις, διορθώσεις, ή μια πόλη που θα ήθελες να προστεθεί; Επικοινώνησε μέσω των στοιχείων επικοινωνίας στη σελίδα Όροι Χρήσης."],
+  ]
+}
+};
+
+let lang = 'en';
+function renderStatic(){
+  const t = I18N[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.getElementById('sections').innerHTML = t.sections.map(s =>
+    `<div class="panel"><h2>${s[0]}</h2><p>${s[1]}</p></div>`).join('');
+  document.getElementById('html-root').lang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.getElementById('btn-el').classList.toggle('active', lang==='el');
+}
+function setLang(l){ lang = l; renderStatic(); }
+renderStatic();
+</script>
+</body>
+</html>

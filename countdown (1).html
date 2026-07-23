@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countdown — Global.Time.Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#f6efe1; --bg-2:#efe2c8;
+    --ink:#2b2418; --ink-muted:#7d715c;
+    --card:rgba(43,36,24,0.045); --card-border:rgba(43,36,24,0.14);
+    --terracotta:#c85a30; --teal:#2f6f5e; --terracotta-dim:rgba(200,90,48,0.25);
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse 55% 35% at 10% -5%, rgba(200,90,48,0.10), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 100% 0%, rgba(47,111,94,0.10), transparent 60%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2) 60%, var(--bg-1) 100%);
+    color:var(--ink); font-family:'Space Grotesk', sans-serif; min-height:100vh;
+  }
+  .wrap{max-width:640px; margin:0 auto; padding:0 24px 80px;}
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 24px; background:rgba(246,239,225,0.85); border-bottom:1px solid var(--card-border);
+    margin:0 -24px 32px;
+  }
+  .brand{font-family:'DM Serif Display', serif; font-size:20px; text-decoration:none; color:var(--ink);}
+  .brand em{color:var(--terracotta); font-style:normal;}
+  .lang-toggle{display:flex; background:rgba(43,36,24,0.06); border-radius:10px; padding:4px; gap:2px;}
+  .lang-toggle button{border:none; background:transparent; color:var(--ink-muted); font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; padding:7px 14px; border-radius:7px; cursor:pointer;}
+  .lang-toggle button.active{background:var(--terracotta); color:#fff;}
+  h1{font-family:'DM Serif Display', serif; font-size:clamp(28px,5vw,38px); margin:0 0 8px;}
+  .lede{color:var(--ink-muted); margin:0 0 28px; line-height:1.6;}
+  .panel{background:var(--card); border:1px solid var(--card-border); border-radius:20px; padding:28px; margin-bottom:20px;}
+  .panel h2{font-family:'DM Serif Display',serif; font-size:19px; margin:0 0 6px;}
+  .event-name{color:var(--terracotta); font-weight:700; font-size:15px; margin-bottom:16px;}
+  .countdown-display{display:flex; gap:14px; flex-wrap:wrap;}
+  .cd-unit{background:rgba(255,255,255,0.5); border:1px solid var(--card-border); border-radius:14px; padding:18px 22px; text-align:center; min-width:90px; flex:1;}
+  .cd-unit .n{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:34px;}
+  .cd-unit .l{font-size:11.5px; color:var(--ink-muted); text-transform:uppercase; letter-spacing:0.06em; margin-top:4px;}
+  .cd-form{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:8px;}
+  .cd-form input{
+    background:rgba(255,255,255,0.5); border:1px solid var(--card-border); color:var(--ink);
+    padding:11px 13px; border-radius:10px; font-family:'Space Grotesk',sans-serif; font-size:14px;
+  }
+  .cd-form input[type="text"]{flex:1; min-width:160px;}
+  .btn{
+    background:var(--terracotta); color:#fff; border:none; font-family:'Space Grotesk',sans-serif;
+    font-weight:700; font-size:14px; padding:11px 20px; border-radius:10px; cursor:pointer;
+  }
+  .btn.secondary{background:var(--teal);}
+  .back-link{display:inline-block; margin-top:10px; color:var(--terracotta); font-size:14px; text-decoration:none;}
+  .back-link:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="exact-time.html" data-i18n="brand">Global<em>.Time.Hub</em></a>
+  <div class="lang-toggle">
+    <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+    <button id="btn-el" onclick="setLang('el')">ΕΛ</button>
+  </div>
+</nav>
+<div class="wrap">
+  <h1 data-i18n="h1">Countdown</h1>
+  <p class="lede" data-i18n="lede">Counting down to New Year by default — or set your own event below.</p>
+
+  <div class="panel">
+    <div class="event-name" id="event-name"></div>
+    <div class="countdown-display" id="cd-display"></div>
+  </div>
+
+  <div class="panel">
+    <h2 data-i18n="customHeading">Set your own countdown</h2>
+    <div class="cd-form">
+      <input type="text" id="cd-name" data-i18n-placeholder="cdNamePlaceholder" placeholder="Event name">
+      <input type="datetime-local" id="cd-target">
+      <button class="btn" onclick="setCustomCountdown()" data-i18n="cdSetBtn">Set countdown</button>
+      <button class="btn secondary" onclick="setNewYearCountdown()" data-i18n="cdNewYearBtn">Back to New Year</button>
+    </div>
+  </div>
+
+  <a class="back-link" data-i18n="back" href="exact-time.html">← Back to the clock</a>
+</div>
+<script>
+const I18N = {
+en: {
+  brand:'Global<em>.Time.Hub</em>', h1:'Countdown', lede:'Counting down to New Year by default — or set your own event below.',
+  customHeading:'Set your own countdown', cdNamePlaceholder:'Event name', cdSetBtn:'Set countdown', cdNewYearBtn:'Back to New Year',
+  back:'← Back to the clock', units:['Days','Hours','Minutes','Seconds'], newYearLabel:'New Year', yourEventLabel:'Your event',
+  reached: "This moment has arrived!"
+},
+el: {
+  brand:'Global<em>.Time.Hub</em>', h1:'Αντίστροφη μέτρηση', lede:'Μέτρηση αντίστροφα για την Πρωτοχρονιά — ή όρισε το δικό σου γεγονός παρακάτω.',
+  customHeading:'Όρισε τη δική σου μέτρηση', cdNamePlaceholder:'Όνομα γεγονότος', cdSetBtn:'Ορισμός μέτρησης', cdNewYearBtn:'Επιστροφή στην Πρωτοχρονιά',
+  back:'← Πίσω στο ρολόι', units:['Ημέρες','Ώρες','Λεπτά','Δευτ.'], newYearLabel:'Πρωτοχρονιά', yourEventLabel:'Το γεγονός σου',
+  reached: "Αυτή η στιγμή έφτασε!"
+}
+};
+let lang = 'en';
+let countdownTarget = null;
+let countdownLabel = '';
+function nextNewYear(){ const now = new Date(); return new Date(now.getFullYear()+1, 0, 1, 0, 0, 0); }
+function setNewYearCountdown(){
+  countdownTarget = nextNewYear();
+  countdownLabel = I18N[lang].newYearLabel;
+  document.getElementById('event-name').textContent = countdownLabel;
+  renderCountdown();
+}
+function setCustomCountdown(){
+  const name = document.getElementById('cd-name').value.trim();
+  const val = document.getElementById('cd-target').value;
+  if(!val) return;
+  countdownTarget = new Date(val);
+  countdownLabel = name || I18N[lang].yourEventLabel;
+  document.getElementById('event-name').textContent = countdownLabel;
+  renderCountdown();
+}
+function renderCountdown(){
+  const t = I18N[lang];
+  const disp = document.getElementById('cd-display');
+  if(!countdownTarget) return;
+  const diff = countdownTarget.getTime() - Date.now();
+  if(diff <= 0){ disp.innerHTML = `<div class="cd-unit" style="flex:none; min-width:100%;"><div class="l">${t.reached}</div></div>`; return; }
+  const days = Math.floor(diff/86400000);
+  const hours = Math.floor((diff%86400000)/3600000);
+  const mins = Math.floor((diff%3600000)/60000);
+  const secs = Math.floor((diff%60000)/1000);
+  const vals = [days, hours, mins, secs];
+  disp.innerHTML = t.units.map((u,i)=>`<div class="cd-unit"><div class="n">${vals[i]}</div><div class="l">${u}</div></div>`).join('');
+}
+function renderStatic(){
+  const t = I18N[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+    const key = el.getAttribute('data-i18n-placeholder');
+    if(t[key] !== undefined) el.placeholder = t[key];
+  });
+  document.getElementById('html-root').lang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.getElementById('btn-el').classList.toggle('active', lang==='el');
+  if(!countdownLabel){ setNewYearCountdown(); }
+  else{
+    document.getElementById('event-name').textContent = countdownLabel;
+    renderCountdown();
+  }
+}
+function setLang(l){ lang = l; renderStatic(); }
+setInterval(renderCountdown, 1000);
+renderStatic();
+</script>
+</body>
+</html>

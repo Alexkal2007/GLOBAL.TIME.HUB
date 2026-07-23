@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global.Time.Hub — Live World Clock & Sunrise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#f6efe1; --bg-2:#efe2c8;
+    --ink:#2b2418; --ink-muted:#7d715c;
+    --card:rgba(246,239,225,0.96); --card-border:rgba(43,36,24,0.14);
+    --terracotta:#c85a30; --teal:#2f6f5e; --terracotta-dim:rgba(200,90,48,0.25);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse 55% 35% at 10% -5%, rgba(200,90,48,0.10), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 100% 0%, rgba(47,111,94,0.10), transparent 60%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-2) 60%, var(--bg-1) 100%);
+    color:var(--ink); font-family:'Space Grotesk', sans-serif; min-height:100vh;
+  }
+  .wrap{max-width:1000px; margin:0 auto; padding:0 24px 90px; position:relative; z-index:1;}
+
+  nav{
+    position:sticky; top:0; z-index:30;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 24px; backdrop-filter:blur(10px);
+    background:rgba(246,239,225,0.85); border-bottom:1px solid var(--card-border);
+    margin:0 -24px 0;
+  }
+  .nav-left{display:flex; align-items:center; gap:14px;}
+  .menu-btn{
+    width:38px; height:38px; border-radius:10px; border:1px solid var(--card-border);
+    background:rgba(255,255,255,0.4); cursor:pointer; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:4px;
+  }
+  .menu-btn span{display:block; width:18px; height:2px; background:var(--ink);}
+  .brand{font-family:'DM Serif Display', serif; font-size:20px; letter-spacing:-0.01em; text-decoration:none; color:var(--ink);}
+  .brand em{color:var(--terracotta); font-style:normal;}
+  .lang-toggle{display:flex; background:rgba(43,36,24,0.06); border-radius:10px; padding:4px; gap:2px;}
+  .lang-toggle button{border:none; background:transparent; color:var(--ink-muted); font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; padding:7px 14px; border-radius:7px; cursor:pointer;}
+  .lang-toggle button.active{background:var(--terracotta); color:#fff;}
+
+  /* ---- drawer (now a nav menu) ---- */
+  .drawer-overlay{
+    position:fixed; inset:0; background:rgba(43,36,24,0.35); z-index:40;
+    opacity:0; pointer-events:none; transition:opacity .25s ease;
+  }
+  .drawer-overlay.open{opacity:1; pointer-events:auto;}
+  .drawer{
+    position:fixed; top:0; left:0; bottom:0; width:300px; max-width:85vw;
+    background:var(--bg-1); z-index:41; padding:26px 22px;
+    transform:translateX(-100%); transition:transform .3s ease;
+    border-right:1px solid var(--card-border); overflow-y:auto;
+  }
+  .drawer.open{transform:translateX(0);}
+  .drawer h3{font-family:'DM Serif Display',serif; font-size:19px; margin:0 0 18px;}
+  .drawer-close{position:absolute; top:20px; right:18px; border:none; background:transparent; font-size:20px; cursor:pointer; color:var(--ink-muted);}
+  .menu-list{display:flex; flex-direction:column; gap:10px;}
+  .menu-list a{
+    display:flex; align-items:center; gap:12px;
+    background:rgba(255,255,255,0.5); border:1px solid var(--card-border); border-radius:14px;
+    padding:14px 16px; text-decoration:none; color:var(--ink); font-weight:600; font-size:15px;
+    transition:border-color .15s ease;
+  }
+  .menu-list a:hover{border-color:var(--terracotta);}
+  .menu-list a .ic{font-size:20px;}
+  .menu-list a .sub{display:block; font-weight:400; font-size:12.5px; color:var(--ink-muted); margin-top:2px;}
+
+  /* ---- spotlight ---- */
+  #spotlight{ margin-top:0; }
+  .spotlight-empty{
+    text-align:center; color:var(--ink-muted); font-size:14px; padding:26px 20px;
+    border:1px dashed var(--card-border); border-radius:18px; margin-top:22px;
+  }
+  .spotlight-card{
+    position:relative; overflow:hidden; border-radius:22px; margin-top:22px;
+    border:1px solid var(--card-border); padding:30px;
+  }
+  .spotlight-bg{position:absolute; inset:0; opacity:0.94;}
+  .spotlight-icon{position:absolute; right:-10px; bottom:-10px; opacity:0.16;}
+  .spotlight-icon svg{width:220px; height:auto;}
+  .spotlight-inner{position:relative; z-index:2; color:#fff;}
+  .spotlight-close{
+    position:absolute; top:16px; right:18px; z-index:3; border:none; background:rgba(255,255,255,0.2);
+    color:#fff; width:30px; height:30px; border-radius:8px; cursor:pointer; font-size:16px;
+  }
+  .spotlight-name{font-size:15px; font-weight:700; opacity:0.9; margin-bottom:4px;}
+  .spotlight-time{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:clamp(38px,7vw,64px); line-height:1;}
+  .spotlight-date{font-size:14px; opacity:0.9; margin-top:6px;}
+  .spotlight-meta{display:flex; gap:20px; flex-wrap:wrap; margin-top:16px; font-size:13px; opacity:0.95;}
+  .sibling-row{margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;}
+  .sibling-chip{background:rgba(255,255,255,0.18); border-radius:10px; padding:8px 12px; font-size:12.5px;}
+
+  .panel{background:var(--card); border:1px solid var(--card-border); border-radius:20px; padding:28px; margin-top:22px;}
+  .panel h2{font-family:'DM Serif Display',serif; font-size:21px; margin:0 0 16px;}
+  .panel .lede{color:var(--ink-muted); font-size:14px; margin:0 0 16px; line-height:1.6;}
+
+  .hero-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:18px;}
+  .you-clock{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:clamp(34px,6vw,52px);}
+  .you-date{color:var(--ink-muted); font-size:14px; margin-top:6px;}
+  .you-tz{color:var(--ink-muted); font-size:12.5px; margin-top:2px;}
+  .sun-row{display:flex; gap:22px; margin-top:14px;}
+  .sun-item{display:flex; flex-direction:column; gap:2px;}
+  .sun-item .label{font-size:12px; color:var(--ink-muted); text-transform:uppercase; letter-spacing:0.06em;}
+  .sun-item .val{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:19px;}
+  .dst-line{margin-top:12px; font-size:13px; color:var(--ink-muted);}
+  select#you-city{
+    margin-top:10px; background:rgba(255,255,255,0.5); border:1px solid var(--card-border); color:var(--ink);
+    padding:8px 10px; border-radius:8px; font-family:'Space Grotesk',sans-serif; font-size:13px;
+  }
+
+  .search-row input{
+    width:100%; background:rgba(255,255,255,0.5); border:1px solid var(--card-border); color:var(--ink);
+    font-family:'Space Grotesk',sans-serif; font-size:15px; padding:12px 16px; border-radius:12px; outline:none; margin-bottom:16px;
+  }
+  .search-row input:focus{box-shadow:0 0 0 2px var(--terracotta-dim);}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:10px;}
+  .country-btn{
+    display:flex; align-items:center; gap:10px;
+    background:rgba(255,255,255,0.45); border:1px solid var(--card-border); border-radius:12px;
+    padding:12px 14px; cursor:pointer; color:var(--ink); font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:600;
+    text-align:left;
+  }
+  .country-btn:hover{border-color:var(--terracotta-dim);}
+  .country-btn.active{border-color:var(--terracotta); background:rgba(200,90,48,0.08);}
+  .country-btn .flag{font-size:20px;}
+  .country-btn.pinned{border-color:var(--teal); background:rgba(47,111,94,0.08);}
+
+  footer{text-align:center; color:var(--ink-muted); font-size:12.5px; margin-top:44px;}
+  footer .flinks{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-top:14px;}
+  footer a{color:var(--ink-muted); text-decoration:none;}
+  footer a:hover{color:var(--terracotta);}
+
+  @media (max-width:640px){
+    .hero-grid{grid-template-columns:1fr;}
+    nav{padding:14px 16px; margin:0 -16px 0;}
+    .wrap{padding:0 16px 90px;}
+  }
+
+</style>
+</head>
+<body>
+
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  <h3 data-i18n="menuHeading">Menu</h3>
+  <div class="menu-list">
+    <a href="calendar.html"><span class="ic">📅</span><span><span data-i18n="menuCalendar">Calendar</span><span class="sub" data-i18n="menuCalendarSub">This month, auto-updates daily</span></span></a>
+    <a href="countdown.html"><span class="ic">⏳</span><span><span data-i18n="menuCountdown">Countdown</span><span class="sub" data-i18n="menuCountdownSub">New Year, or your own event</span></span></a>
+    <a href="birthday.html"><span class="ic">🎂</span><span><span data-i18n="menuBirthday">Birthday Finder</span><span class="sub" data-i18n="menuBirthdaySub">What day of the week were you born</span></span></a>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-left">
+    <button class="menu-btn" onclick="openDrawer()" aria-label="Menu"><span></span><span></span><span></span></button>
+    <a class="brand" href="exact-time.html" data-i18n="brand">Global<em>.Time.Hub</em></a>
+  </div>
+  <div class="lang-toggle">
+    <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+    <button id="btn-el" onclick="setLang('el')">ΕΛ</button>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div id="spotlight">
+    <div class="spotlight-empty" id="spotlight-empty" data-i18n="spotlightEmpty">Pick a country below — its time will open right here, at the top.</div>
+  </div>
+
+  <div class="panel">
+    <h2 data-i18n="youHeading">Your time, right now</h2>
+    <div class="hero-grid">
+      <div>
+        <div class="you-clock" id="you-clock">00:00:00</div>
+        <div class="you-date" id="you-date"></div>
+        <div class="you-tz" id="you-tz"></div>
+      </div>
+      <div>
+        <div class="sun-row">
+          <div class="sun-item"><span class="label" data-i18n="sunrise">Sunrise</span><span class="val" id="you-sunrise">—</span></div>
+          <div class="sun-item"><span class="label" data-i18n="sunset">Sunset</span><span class="val" id="you-sunset">—</span></div>
+        </div>
+        <div class="dst-line" id="you-dst"></div>
+        <label class="you-tz" data-i18n="youCityLabel" for="you-city">If this isn't quite right, pick the closest city:</label><br>
+        <select id="you-city"></select>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 data-i18n="worldHeading">World clock</h2>
+    <p class="lede" data-i18n="worldLede">Search or tap a country — its exact time, date, and sunrise/sunset will open at the very top of the page.</p>
+    <div class="search-row">
+      <input type="text" id="search" data-i18n-placeholder="searchPlaceholder" placeholder="Search for a country or city…">
+    </div>
+    <div class="grid" id="country-grid"></div>
+  </div>
+
+  <footer>
+    <div data-i18n="footerNote">Times, sunrise/sunset, and daylight saving status are all calculated live in your browser.</div>
+    <div class="flinks">
+      <a href="about-us-clock.html" data-i18n="linkAbout">About Us</a>
+      <a href="terms-of-use-clock.html" data-i18n="linkTerms">Terms of Use</a>
+      <a href="privacy-policy-clock.html" data-i18n="linkPrivacy">Privacy Policy</a>
+      <a href="cookie-policy-clock.html" data-i18n="linkCookies">Cookie Policy</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+const ICONS = {
+eiffel: `<polygon points="120,10 100,150 90,150 118,20 122,20 150,150 140,150" fill="#fff"/><rect x="95" y="70" width="50" height="6" fill="#fff"/><rect x="102" y="105" width="36" height="6" fill="#fff"/><rect x="80" y="150" width="80" height="6" fill="#fff"/>`,
+bigben: `<rect x="100" y="20" width="40" height="120" rx="2" fill="#fff"/><circle cx="120" cy="55" r="14" fill="none" stroke="#2b2418" stroke-width="4"/><polygon points="95,20 145,20 120,4" fill="#fff"/><rect x="85" y="140" width="70" height="6" fill="#fff"/>`,
+skyline: `<rect x="40" y="90" width="26" height="60" fill="#fff"/><rect x="72" y="60" width="30" height="90" fill="#fff"/><rect x="106" y="30" width="24" height="120" fill="#fff"/><rect x="115" y="14" width="6" height="18" fill="#fff"/><rect x="134" y="75" width="28" height="75" fill="#fff"/><rect x="166" y="95" width="24" height="55" fill="#fff"/>`,
+gate: `<rect x="60" y="40" width="10" height="100" fill="#fff"/><rect x="90" y="40" width="10" height="100" fill="#fff"/><rect x="120" y="40" width="10" height="100" fill="#fff"/><rect x="150" y="40" width="10" height="100" fill="#fff"/><rect x="55" y="26" width="110" height="12" fill="#fff"/><rect x="100" y="8" width="20" height="16" fill="#fff"/>`,
+parthenon: `<rect x="55" y="45" width="10" height="90" fill="#fff"/><rect x="80" y="45" width="10" height="90" fill="#fff"/><rect x="105" y="45" width="10" height="90" fill="#fff"/><rect x="130" y="45" width="10" height="90" fill="#fff"/><rect x="155" y="45" width="10" height="90" fill="#fff"/><rect x="48" y="33" width="124" height="10" fill="#fff"/><polygon points="45,33 175,33 110,8" fill="#fff"/><rect x="40" y="135" width="140" height="8" fill="#fff"/>`,
+colosseum: `<rect x="35" y="60" width="150" height="80" rx="12" fill="#fff"/><circle cx="55" cy="60" r="9" fill="#c85a30"/><circle cx="80" cy="60" r="9" fill="#c85a30"/><circle cx="105" cy="60" r="9" fill="#c85a30"/><circle cx="130" cy="60" r="9" fill="#c85a30"/><circle cx="155" cy="60" r="9" fill="#c85a30"/><circle cx="55" cy="95" r="9" fill="#c85a30"/><circle cx="80" cy="95" r="9" fill="#c85a30"/><circle cx="105" cy="95" r="9" fill="#c85a30"/><circle cx="130" cy="95" r="9" fill="#c85a30"/><circle cx="155" cy="95" r="9" fill="#c85a30"/>`,
+torii: `<rect x="70" y="30" width="10" height="110" fill="#fff"/><rect x="160" y="30" width="10" height="110" fill="#fff"/><rect x="55" y="18" width="130" height="10" fill="#fff"/><rect x="65" y="38" width="110" height="8" fill="#fff"/>`,
+greatwall: `<polyline points="20,140 60,90 100,120 140,70 180,110 220,60" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><rect x="55" y="80" width="10" height="14" fill="#fff"/><rect x="135" y="60" width="10" height="14" fill="#fff"/>`,
+tajmahal: `<circle cx="120" cy="55" r="30" fill="#fff"/><rect x="95" y="70" width="50" height="65" fill="#fff"/><rect x="45" y="90" width="14" height="45" fill="#fff"/><circle cx="52" cy="85" r="9" fill="#fff"/><rect x="181" y="90" width="14" height="45" fill="#fff"/><circle cx="188" cy="85" r="9" fill="#fff"/>`,
+operahouse: `<path d="M40,140 C40,90 75,60 95,140 Z" fill="#fff"/><path d="M85,140 C85,80 125,50 140,140 Z" fill="#fff"/><path d="M130,140 C130,95 165,70 185,140 Z" fill="#fff"/>`,
+christ: `<rect x="116" y="30" width="8" height="90" fill="#fff"/><rect x="80" y="55" width="80" height="8" fill="#fff"/><polygon points="90,140 150,140 120,110" fill="#fff"/>`,
+burj: `<polygon points="118,10 128,10 140,140 100,140" fill="#fff"/><rect x="118" y="0" width="4" height="14" fill="#fff"/><rect x="70" y="120" width="100" height="8" fill="#fff"/>`,
+};
+const GENERIC_ICON = `<circle cx="120" cy="80" r="55" fill="none" stroke="#fff" stroke-width="4"/><ellipse cx="120" cy="80" rx="55" ry="22" fill="none" stroke="#fff" stroke-width="3"/><line x1="65" y1="80" x2="175" y2="80" stroke="#fff" stroke-width="3"/><line x1="120" y1="25" x2="120" y2="135" stroke="#fff" stroke-width="3"/>`;
+const FALLBACK_PALETTES = [['#4a6fa5','#2c3e63'],['#7a5c61','#4a3435'],['#5c8374','#183d3d'],['#8e6c88','#4a3552'],['#c9a66b','#7a5c2e'],['#5b7f8f','#2f4858']];
+function paletteFor(seed){ let h=0; for(const ch of seed) h=(h*31+ch.charCodeAt(0))>>>0; return FALLBACK_PALETTES[h % FALLBACK_PALETTES.length]; }
+
+const COUNTRIES = [
+  {id:'gr', flag:'🇬🇷', en:'Greece', el:'Ελλάδα', colors:['#0D5EAF','#4189DD'], icon:'parthenon', pinned:true,
+    cities:[{en:'Athens', el:'Αθήνα', tz:'Europe/Athens', lat:37.9838, lon:23.7275, primary:true}]},
+  {id:'us', flag:'🇺🇸', en:'United States', el:'Ηνωμένες Πολιτείες', colors:['#3C3B6E','#B22234'], icon:'skyline',
+    cities:[
+      {en:'New York', el:'Νέα Υόρκη', tz:'America/New_York', lat:40.7128, lon:-74.0060, primary:true},
+      {en:'Chicago', el:'Σικάγο', tz:'America/Chicago', lat:41.8781, lon:-87.6298},
+      {en:'Los Angeles', el:'Λος Άντζελες', tz:'America/Los_Angeles', lat:34.0522, lon:-118.2437},
+    ]},
+  {id:'gb', flag:'🇬🇧', en:'United Kingdom', el:'Ηνωμένο Βασίλειο', colors:['#012169','#C8102E'], icon:'bigben',
+    cities:[{en:'London', el:'Λονδίνο', tz:'Europe/London', lat:51.5074, lon:-0.1278, primary:true}]},
+  {id:'fr', flag:'🇫🇷', en:'France', el:'Γαλλία', colors:['#0055A4','#EF4135'], icon:'eiffel',
+    cities:[{en:'Paris', el:'Παρίσι', tz:'Europe/Paris', lat:48.8566, lon:2.3522, primary:true}]},
+  {id:'de', flag:'🇩🇪', en:'Germany', el:'Γερμανία', colors:['#1a1a1a','#FFCE00'], icon:'gate',
+    cities:[{en:'Berlin', el:'Βερολίνο', tz:'Europe/Berlin', lat:52.5200, lon:13.4050, primary:true}]},
+  {id:'it', flag:'🇮🇹', en:'Italy', el:'Ιταλία', colors:['#008C45','#CD212A'], icon:'colosseum',
+    cities:[{en:'Rome', el:'Ρώμη', tz:'Europe/Rome', lat:41.9028, lon:12.4964, primary:true}]},
+  {id:'es', flag:'🇪🇸', en:'Spain', el:'Ισπανία', colors:['#AA151B','#F1BF00'], icon:'gate',
+    cities:[{en:'Madrid', el:'Μαδρίτη', tz:'Europe/Madrid', lat:40.4168, lon:-3.7038, primary:true}]},
+  {id:'ru', flag:'🇷🇺', en:'Russia', el:'Ρωσία', colors:['#0039A6','#D52B1E'], icon:'colosseum',
+    cities:[
+      {en:'Moscow', el:'Μόσχα', tz:'Europe/Moscow', lat:55.7558, lon:37.6173, primary:true},
+      {en:'Vladivostok', el:'Βλαδιβοστόκ', tz:'Asia/Vladivostok', lat:43.1198, lon:131.8869},
+    ]},
+  {id:'cn', flag:'🇨🇳', en:'China', el:'Κίνα', colors:['#DE2910','#FFDE00'], icon:'greatwall',
+    cities:[{en:'Beijing', el:'Πεκίνο', tz:'Asia/Shanghai', lat:39.9042, lon:116.4074, primary:true}]},
+  {id:'jp', flag:'🇯🇵', en:'Japan', el:'Ιαπωνία', colors:['#BC002D','#7A0019'], icon:'torii',
+    cities:[{en:'Tokyo', el:'Τόκιο', tz:'Asia/Tokyo', lat:35.6762, lon:139.6503, primary:true}]},
+  {id:'in', flag:'🇮🇳', en:'India', el:'Ινδία', colors:['#FF9933','#138808'], icon:'tajmahal',
+    cities:[{en:'New Delhi', el:'Νέο Δελχί', tz:'Asia/Kolkata', lat:28.6139, lon:77.2090, primary:true}]},
+  {id:'au', flag:'🇦🇺', en:'Australia', el:'Αυστραλία', colors:['#00008B','#E4002B'], icon:'operahouse',
+    cities:[
+      {en:'Sydney', el:'Σίδνεϊ', tz:'Australia/Sydney', lat:-33.8688, lon:151.2093, primary:true},
+      {en:'Perth', el:'Περθ', tz:'Australia/Perth', lat:-31.9505, lon:115.8605},
+    ]},
+  {id:'br', flag:'🇧🇷', en:'Brazil', el:'Βραζιλία', colors:['#009739','#FEDD00'], icon:'christ',
+    cities:[{en:'São Paulo', el:'Σάο Πάολο', tz:'America/Sao_Paulo', lat:-23.5505, lon:-46.6333, primary:true}]},
+  {id:'ca', flag:'🇨🇦', en:'Canada', el:'Καναδάς', colors:['#D80621','#8b0000'], icon:'skyline',
+    cities:[{en:'Toronto', el:'Τορόντο', tz:'America/Toronto', lat:43.6532, lon:-79.3832, primary:true}]},
+  {id:'eg', flag:'🇪🇬', en:'Egypt', el:'Αίγυπτος', colors:['#CE1126','#8b7014'], icon:'burj',
+    cities:[{en:'Cairo', el:'Κάιρο', tz:'Africa/Cairo', lat:30.0444, lon:31.2357, primary:true}]},
+  {id:'ae', flag:'🇦🇪', en:'United Arab Emirates', el:'Ηνωμένα Αραβικά Εμιράτα', colors:['#00732F','#8b0000'], icon:'burj',
+    cities:[{en:'Dubai', el:'Ντουμπάι', tz:'Asia/Dubai', lat:25.2048, lon:55.2708, primary:true}]},
+  {id:'za', flag:'🇿🇦', en:'South Africa', el:'Νότια Αφρική', colors:['#007A4D','#DE3831'], icon:'skyline',
+    cities:[{en:'Johannesburg', el:'Γιοχάνεσμπουργκ', tz:'Africa/Johannesburg', lat:-26.2041, lon:28.0473, primary:true}]},
+  {id:'mx', flag:'🇲🇽', en:'Mexico', el:'Μεξικό', colors:['#006341','#CE1126'], icon:'operahouse',
+    cities:[{en:'Mexico City', el:'Πόλη του Μεξικού', tz:'America/Mexico_City', lat:19.4326, lon:-99.1332, primary:true}]},
+  {id:'kr', flag:'🇰🇷', en:'South Korea', el:'Νότια Κορέα', colors:['#003478','#C60C30'], icon:'gate',
+    cities:[{en:'Seoul', el:'Σεούλ', tz:'Asia/Seoul', lat:37.5665, lon:126.9780, primary:true}]},
+  {id:'tr', flag:'🇹🇷', en:'Turkey', el:'Τουρκία', colors:['#E30A17','#8b0000'], icon:'torii',
+    cities:[{en:'Istanbul', el:'Κωνσταντινούπολη', tz:'Europe/Istanbul', lat:41.0082, lon:28.9784, primary:true}]},
+];
+
+const EXTRA_CITIES = [
+  {id:'pt', flag:'🇵🇹', en:'Portugal', el:'Πορτογαλία', cities:[{en:'Lisbon', el:'Λισαβόνα', tz:'Europe/Lisbon', lat:38.7223, lon:-9.1393, primary:true}]},
+  {id:'nl', flag:'🇳🇱', en:'Netherlands', el:'Ολλανδία', cities:[{en:'Amsterdam', el:'Άμστερνταμ', tz:'Europe/Amsterdam', lat:52.3676, lon:4.9041, primary:true}]},
+  {id:'be', flag:'🇧🇪', en:'Belgium', el:'Βέλγιο', cities:[{en:'Brussels', el:'Βρυξέλλες', tz:'Europe/Brussels', lat:50.8503, lon:4.3517, primary:true}]},
+  {id:'ch', flag:'🇨🇭', en:'Switzerland', el:'Ελβετία', cities:[{en:'Zurich', el:'Ζυρίχη', tz:'Europe/Zurich', lat:47.3769, lon:8.5417, primary:true}]},
+  {id:'at', flag:'🇦🇹', en:'Austria', el:'Αυστρία', cities:[{en:'Vienna', el:'Βιέννη', tz:'Europe/Vienna', lat:48.2082, lon:16.3738, primary:true}]},
+  {id:'se', flag:'🇸🇪', en:'Sweden', el:'Σουηδία', cities:[{en:'Stockholm', el:'Στοκχόλμη', tz:'Europe/Stockholm', lat:59.3293, lon:18.0686, primary:true}]},
+  {id:'no', flag:'🇳🇴', en:'Norway', el:'Νορβηγία', cities:[{en:'Oslo', el:'Όσλο', tz:'Europe/Oslo', lat:59.9139, lon:10.7522, primary:true}]},
+  {id:'dk', flag:'🇩🇰', en:'Denmark', el:'Δανία', cities:[{en:'Copenhagen', el:'Κοπεγχάγη', tz:'Europe/Copenhagen', lat:55.6761, lon:12.5683, primary:true}]},
+  {id:'fi', flag:'🇫🇮', en:'Finland', el:'Φινλανδία', cities:[{en:'Helsinki', el:'Ελσίνκι', tz:'Europe/Helsinki', lat:60.1699, lon:24.9384, primary:true}]},
+  {id:'pl', flag:'🇵🇱', en:'Poland', el:'Πολωνία', cities:[{en:'Warsaw', el:'Βαρσοβία', tz:'Europe/Warsaw', lat:52.2297, lon:21.0122, primary:true}]},
+  {id:'cz', flag:'🇨🇿', en:'Czechia', el:'Τσεχία', cities:[{en:'Prague', el:'Πράγα', tz:'Europe/Prague', lat:50.0755, lon:14.4378, primary:true}]},
+  {id:'hu', flag:'🇭🇺', en:'Hungary', el:'Ουγγαρία', cities:[{en:'Budapest', el:'Βουδαπέστη', tz:'Europe/Budapest', lat:47.4979, lon:19.0402, primary:true}]},
+  {id:'ro', flag:'🇷🇴', en:'Romania', el:'Ρουμανία', cities:[{en:'Bucharest', el:'Βουκουρέστι', tz:'Europe/Bucharest', lat:44.4268, lon:26.1025, primary:true}]},
+  {id:'bgr', flag:'🇧🇬', en:'Bulgaria', el:'Βουλγαρία', cities:[{en:'Sofia', el:'Σόφια', tz:'Europe/Sofia', lat:42.6977, lon:23.3219, primary:true}]},
+  {id:'ua', flag:'🇺🇦', en:'Ukraine', el:'Ουκρανία', cities:[{en:'Kyiv', el:'Κίεβο', tz:'Europe/Kyiv', lat:50.4501, lon:30.5234, primary:true}]},
+  {id:'ie', flag:'🇮🇪', en:'Ireland', el:'Ιρλανδία', cities:[{en:'Dublin', el:'Δουβλίνο', tz:'Europe/Dublin', lat:53.3498, lon:-6.2603, primary:true}]},
+  {id:'rs', flag:'🇷🇸', en:'Serbia', el:'Σερβία', cities:[{en:'Belgrade', el:'Βελιγράδι', tz:'Europe/Belgrade', lat:44.7866, lon:20.4489, primary:true}]},
+  {id:'hr', flag:'🇭🇷', en:'Croatia', el:'Κροατία', cities:[{en:'Zagreb', el:'Ζάγκρεμπ', tz:'Europe/Zagreb', lat:45.8150, lon:15.9819, primary:true}]},
+  {id:'cy', flag:'🇨🇾', en:'Cyprus', el:'Κύπρος', cities:[{en:'Nicosia', el:'Λευκωσία', tz:'Asia/Nicosia', lat:35.1856, lon:33.3823, primary:true}]},
+  {id:'ar', flag:'🇦🇷', en:'Argentina', el:'Αργεντινή', cities:[{en:'Buenos Aires', el:'Μπουένος Άιρες', tz:'America/Argentina/Buenos_Aires', lat:-34.6037, lon:-58.3816, primary:true}]},
+  {id:'cl', flag:'🇨🇱', en:'Chile', el:'Χιλή', cities:[{en:'Santiago', el:'Σαντιάγο', tz:'America/Santiago', lat:-33.4489, lon:-70.6693, primary:true}]},
+  {id:'co', flag:'🇨🇴', en:'Colombia', el:'Κολομβία', cities:[{en:'Bogotá', el:'Μπογκοτά', tz:'America/Bogota', lat:4.7110, lon:-74.0721, primary:true}]},
+  {id:'pe', flag:'🇵🇪', en:'Peru', el:'Περού', cities:[{en:'Lima', el:'Λίμα', tz:'America/Lima', lat:-12.0464, lon:-77.0428, primary:true}]},
+  {id:'ve', flag:'🇻🇪', en:'Venezuela', el:'Βενεζουέλα', cities:[{en:'Caracas', el:'Καράκας', tz:'America/Caracas', lat:10.4806, lon:-66.9036, primary:true}]},
+  {id:'cu', flag:'🇨🇺', en:'Cuba', el:'Κούβα', cities:[{en:'Havana', el:'Αβάνα', tz:'America/Havana', lat:23.1136, lon:-82.3666, primary:true}]},
+  {id:'jm', flag:'🇯🇲', en:'Jamaica', el:'Τζαμάικα', cities:[{en:'Kingston', el:'Κίνγκστον', tz:'America/Jamaica', lat:17.9712, lon:-76.7936, primary:true}]},
+  {id:'id', flag:'🇮🇩', en:'Indonesia', el:'Ινδονησία', cities:[{en:'Jakarta', el:'Τζακάρτα', tz:'Asia/Jakarta', lat:-6.2088, lon:106.8456, primary:true}]},
+  {id:'th', flag:'🇹🇭', en:'Thailand', el:'Ταϊλάνδη', cities:[{en:'Bangkok', el:'Μπανγκόκ', tz:'Asia/Bangkok', lat:13.7563, lon:100.5018, primary:true}]},
+  {id:'vn', flag:'🇻🇳', en:'Vietnam', el:'Βιετνάμ', cities:[{en:'Hanoi', el:'Ανόι', tz:'Asia/Ho_Chi_Minh', lat:21.0285, lon:105.8542, primary:true}]},
+  {id:'ph', flag:'🇵🇭', en:'Philippines', el:'Φιλιππίνες', cities:[{en:'Manila', el:'Μανίλα', tz:'Asia/Manila', lat:14.5995, lon:120.9842, primary:true}]},
+  {id:'my', flag:'🇲🇾', en:'Malaysia', el:'Μαλαισία', cities:[{en:'Kuala Lumpur', el:'Κουάλα Λουμπούρ', tz:'Asia/Kuala_Lumpur', lat:3.1390, lon:101.6869, primary:true}]},
+  {id:'sg', flag:'🇸🇬', en:'Singapore', el:'Σιγκαπούρη', cities:[{en:'Singapore', el:'Σιγκαπούρη', tz:'Asia/Singapore', lat:1.3521, lon:103.8198, primary:true}]},
+  {id:'pk', flag:'🇵🇰', en:'Pakistan', el:'Πακιστάν', cities:[{en:'Islamabad', el:'Ισλαμαμπάντ', tz:'Asia/Karachi', lat:33.6844, lon:73.0479, primary:true}]},
+  {id:'bd', flag:'🇧🇩', en:'Bangladesh', el:'Μπανγκλαντές', cities:[{en:'Dhaka', el:'Ντάκα', tz:'Asia/Dhaka', lat:23.8103, lon:90.4125, primary:true}]},
+  {id:'lk', flag:'🇱🇰', en:'Sri Lanka', el:'Σρι Λάνκα', cities:[{en:'Colombo', el:'Κολόμπο', tz:'Asia/Colombo', lat:6.9271, lon:79.8612, primary:true}]},
+  {id:'np', flag:'🇳🇵', en:'Nepal', el:'Νεπάλ', cities:[{en:'Kathmandu', el:'Κατμαντού', tz:'Asia/Kathmandu', lat:27.7172, lon:85.3240, primary:true}]},
+  {id:'il', flag:'🇮🇱', en:'Israel', el:'Ισραήλ', cities:[{en:'Jerusalem', el:'Ιερουσαλήμ', tz:'Asia/Jerusalem', lat:31.7683, lon:35.2137, primary:true}]},
+  {id:'sa', flag:'🇸🇦', en:'Saudi Arabia', el:'Σαουδική Αραβία', cities:[{en:'Riyadh', el:'Ριάντ', tz:'Asia/Riyadh', lat:24.7136, lon:46.6753, primary:true}]},
+  {id:'qa', flag:'🇶🇦', en:'Qatar', el:'Κατάρ', cities:[{en:'Doha', el:'Ντόχα', tz:'Asia/Qatar', lat:25.2854, lon:51.5310, primary:true}]},
+  {id:'ir', flag:'🇮🇷', en:'Iran', el:'Ιράν', cities:[{en:'Tehran', el:'Τεχεράνη', tz:'Asia/Tehran', lat:35.6892, lon:51.3890, primary:true}]},
+  {id:'iq', flag:'🇮🇶', en:'Iraq', el:'Ιράκ', cities:[{en:'Baghdad', el:'Βαγδάτη', tz:'Asia/Baghdad', lat:33.3152, lon:44.3661, primary:true}]},
+  {id:'kz', flag:'🇰🇿', en:'Kazakhstan', el:'Καζακστάν', cities:[{en:'Astana', el:'Αστάνα', tz:'Asia/Almaty', lat:51.1694, lon:71.4491, primary:true}]},
+  {id:'tw', flag:'🇹🇼', en:'Taiwan', el:'Ταϊβάν', cities:[{en:'Taipei', el:'Ταϊπέι', tz:'Asia/Taipei', lat:25.0330, lon:121.5654, primary:true}]},
+  {id:'hk', flag:'🇭🇰', en:'Hong Kong', el:'Χονγκ Κονγκ', cities:[{en:'Hong Kong', el:'Χονγκ Κονγκ', tz:'Asia/Hong_Kong', lat:22.3193, lon:114.1694, primary:true}]},
+  {id:'ng', flag:'🇳🇬', en:'Nigeria', el:'Νιγηρία', cities:[{en:'Lagos', el:'Λάγος', tz:'Africa/Lagos', lat:6.5244, lon:3.3792, primary:true}]},
+  {id:'ke', flag:'🇰🇪', en:'Kenya', el:'Κένυα', cities:[{en:'Nairobi', el:'Ναϊρόμπι', tz:'Africa/Nairobi', lat:-1.2921, lon:36.8219, primary:true}]},
+  {id:'ma', flag:'🇲🇦', en:'Morocco', el:'Μαρόκο', cities:[{en:'Rabat', el:'Ραμπάτ', tz:'Africa/Casablanca', lat:34.0209, lon:-6.8417, primary:true}]},
+  {id:'dz', flag:'🇩🇿', en:'Algeria', el:'Αλγερία', cities:[{en:'Algiers', el:'Αλγέρι', tz:'Africa/Algiers', lat:36.7538, lon:3.0588, primary:true}]},
+  {id:'tn', flag:'🇹🇳', en:'Tunisia', el:'Τυνησία', cities:[{en:'Tunis', el:'Τύνιδα', tz:'Africa/Tunis', lat:36.8065, lon:10.1815, primary:true}]},
+  {id:'et', flag:'🇪🇹', en:'Ethiopia', el:'Αιθιοπία', cities:[{en:'Addis Ababa', el:'Αντίς Αμπέμπα', tz:'Africa/Addis_Ababa', lat:9.0300, lon:38.7400, primary:true}]},
+  {id:'gh', flag:'🇬🇭', en:'Ghana', el:'Γκάνα', cities:[{en:'Accra', el:'Άκρα', tz:'Africa/Accra', lat:5.6037, lon:-0.1870, primary:true}]},
+  {id:'tza', flag:'🇹🇿', en:'Tanzania', el:'Τανζανία', cities:[{en:'Dar es Salaam', el:'Νταρ ες Σαλάμ', tz:'Africa/Dar_es_Salaam', lat:-6.7924, lon:39.2083, primary:true}]},
+  {id:'nz', flag:'🇳🇿', en:'New Zealand', el:'Νέα Ζηλανδία', cities:[{en:'Wellington', el:'Ουέλινγκτον', tz:'Pacific/Auckland', lat:-41.2865, lon:174.7762, primary:true}]},
+  {id:'fj', flag:'🇫🇯', en:'Fiji', el:'Φίτζι', cities:[{en:'Suva', el:'Σούβα', tz:'Pacific/Fiji', lat:-18.1416, lon:178.4419, primary:true}]},
+];
+const ALL_ENTRIES = COUNTRIES.concat(EXTRA_CITIES);
+
+let lang = 'en';
+let selectedCountry = null;
+let selectedCity = null;
+const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+const I18N = {
+en: {
+  brand: 'Global<em>.Time.Hub</em>',
+  menuHeading: 'Menu',
+  menuCalendar: 'Calendar', menuCalendarSub: 'This month, auto-updates daily',
+  menuCountdown: 'Countdown', menuCountdownSub: 'New Year, or your own event',
+  menuBirthday: 'Birthday Finder', menuBirthdaySub: 'What day of the week were you born',
+  spotlightEmpty: 'Pick a country below — its time will open right here, at the top.',
+  youHeading: 'Your time, right now',
+  sunrise: 'Sunrise', sunset: 'Sunset',
+  youCityLabel: "If this isn't quite right, pick the closest city:",
+  worldHeading: 'World clock',
+  worldLede: 'Search or tap a country — its exact time, date, and sunrise/sunset will open at the very top of the page.',
+  searchPlaceholder: 'Search for a country or city…',
+  footerNote: 'Times, sunrise/sunset, and daylight saving status are all calculated live in your browser.',
+  linkAbout: 'About Us', linkTerms: 'Terms of Use', linkPrivacy: 'Privacy Policy', linkCookies: 'Cookie Policy',
+  diffAhead: 'ahead of you', diffBehind: 'behind you', diffSame: 'same time as you',
+  utcLabel: 'UTC offset',
+  dstYesNow: 'Currently observing Daylight Saving Time (summer time).',
+  dstNoNow: 'Currently on Standard Time (winter time).',
+  dstNever: 'This location does not observe Daylight Saving Time.',
+  singleTz: 'This country uses a single time zone nationwide.',
+  neverRises: 'polar day (sun does not set)',
+  neverSets: 'polar night (sun does not rise)',
+},
+el: {
+  brand: 'Global<em>.Time.Hub</em>',
+  menuHeading: 'Μενού',
+  menuCalendar: 'Ημερολόγιο', menuCalendarSub: 'Ο τρέχων μήνας, ανανεώνεται αυτόματα κάθε μέρα',
+  menuCountdown: 'Αντίστροφη μέτρηση', menuCountdownSub: 'Πρωτοχρονιά, ή δικό σου γεγονός',
+  menuBirthday: 'Εύρεση ημέρας γέννησης', menuBirthdaySub: 'Τι μέρα της εβδομάδας γεννήθηκες',
+  spotlightEmpty: 'Διάλεξε μια χώρα παρακάτω — η ώρα της θα ανοίξει ακριβώς εδώ, στην κορυφή.',
+  youHeading: 'Η ώρα σου, αυτή τη στιγμή',
+  sunrise: 'Ανατολή', sunset: 'Δύση',
+  youCityLabel: 'Αν αυτό δεν είναι ακριβές, διάλεξε την πλησιέστερη πόλη:',
+  worldHeading: 'Παγκόσμιο ρολόι',
+  worldLede: 'Αναζήτησε ή πάτησε μια χώρα — η ακριβής ώρα, η ημερομηνία και η ανατολή/δύση θα ανοίξουν ακριβώς στην κορυφή της σελίδας.',
+  searchPlaceholder: 'Αναζήτησε χώρα ή πόλη…',
+  footerNote: 'Οι ώρες, η ανατολή/δύση, και η θερινή/χειμερινή ώρα υπολογίζονται ζωντανά μέσα στον browser σου.',
+  linkAbout: 'Σχετικά με εμάς', linkTerms: 'Όροι Χρήσης', linkPrivacy: 'Πολιτική Απορρήτου', linkCookies: 'Πολιτική Cookies',
+  diffAhead: 'μπροστά από εσένα', diffBehind: 'πίσω από εσένα', diffSame: 'ίδια ώρα με εσένα',
+  utcLabel: 'Διαφορά από UTC',
+  dstYesNow: 'Αυτή τη στιγμή ισχύει θερινή ώρα.',
+  dstNoNow: 'Αυτή τη στιγμή ισχύει χειμερινή ώρα.',
+  dstNever: 'Αυτή η τοποθεσία δεν εφαρμόζει θερινή/χειμερινή ώρα.',
+  singleTz: 'Αυτή η χώρα χρησιμοποιεί μία ενιαία ζώνη ώρας σε όλη την επικράτεια.',
+  neverRises: 'πολική ημέρα (ο ήλιος δεν δύει)',
+  neverSets: 'πολική νύχτα (ο ήλιος δεν ανατέλλει)',
+}
+};
+
+function tzOffsetMinutes(tz, date){
+  const dtf = new Intl.DateTimeFormat('en-US', {timeZone:tz, hour12:false, year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const parts = dtf.formatToParts(date).reduce((acc,p)=>{ if(p.type!=='literal') acc[p.type]=p.value; return acc;},{});
+  const asUTC = Date.UTC(parts.year, parts.month-1, parts.day, parts.hour==24?0:parts.hour, parts.minute, parts.second);
+  return (asUTC - date.getTime())/60000;
+}
+function fmtTime(tz){
+  const now = new Date();
+  return now.toLocaleTimeString(lang==='el'?'el-GR':'en-US', {timeZone:tz, hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false});
+}
+function fmtDate(tz){
+  const now = new Date();
+  return now.toLocaleDateString(lang==='el'?'el-GR':'en-US', {timeZone:tz, weekday:'long', year:'numeric', month:'long', day:'numeric'});
+}
+function dstInfo(tz){
+  const now = new Date();
+  const jan = new Date(now.getFullYear(),0,5);
+  const jul = new Date(now.getFullYear(),6,5);
+  const janOff = tzOffsetMinutes(tz,jan);
+  const julOff = tzOffsetMinutes(tz,jul);
+  const curOff = tzOffsetMinutes(tz, now);
+  const observesDST = Math.abs(janOff - julOff) > 1;
+  const isDSTnow = observesDST && curOff === Math.max(janOff, julOff);
+  return {observesDST, isDSTnow};
+}
+function sunTimes(lat, lon, tz){
+  const now = new Date();
+  const start = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  const N = Math.floor((start - Date.UTC(now.getFullYear(),0,0)) / 86400000);
+  const tzOffsetHours = tzOffsetMinutes(tz, now) / 60;
+  function calc(isSunrise){
+    const lngHour = lon/15;
+    const t = isSunrise ? N + ((6 - lngHour)/24) : N + ((18 - lngHour)/24);
+    const M = (0.9856*t) - 3.289;
+    let L = M + (1.916*Math.sin(M*Math.PI/180)) + (0.020*Math.sin(2*M*Math.PI/180)) + 282.634;
+    L = ((L%360)+360)%360;
+    let RA = (180/Math.PI)*Math.atan(0.91764*Math.tan(L*Math.PI/180));
+    RA = ((RA%360)+360)%360;
+    const Lq = Math.floor(L/90)*90, RAq = Math.floor(RA/90)*90;
+    RA = (RA + (Lq - RAq)) / 15;
+    const sinDec = 0.39782*Math.sin(L*Math.PI/180);
+    const cosDec = Math.cos(Math.asin(sinDec));
+    const zenith = 90.833;
+    const cosH = (Math.cos(zenith*Math.PI/180) - (sinDec*Math.sin(lat*Math.PI/180))) / (cosDec*Math.cos(lat*Math.PI/180));
+    if(cosH > 1) return 'never-rises';
+    if(cosH < -1) return 'never-sets';
+    let H = isSunrise ? 360 - (180/Math.PI)*Math.acos(cosH) : (180/Math.PI)*Math.acos(cosH);
+    H /= 15;
+    const T = H + RA - (0.06571*t) - 6.622;
+    let UT = ((T - lngHour)%24+24)%24;
+    let localT = ((UT + tzOffsetHours)%24+24)%24;
+    const hh = Math.floor(localT);
+    const mm = Math.round((localT-hh)*60);
+    return (hh<10?'0':'')+hh+':'+(mm<10?'0':'')+mm;
+  }
+  return {sunrise: calc(true), sunset: calc(false)};
+}
+
+function openDrawer(){ document.getElementById('drawer').classList.add('open'); document.getElementById('drawer-overlay').classList.add('open'); }
+function closeDrawer(){ document.getElementById('drawer').classList.remove('open'); document.getElementById('drawer-overlay').classList.remove('open'); }
+
+function matchCity(c, q){
+  if(!q) return null;
+  const ql = q.toLowerCase();
+  return c.cities.find(city => city[lang].toLowerCase().includes(ql)) || null;
+}
+function sortedEntries(){
+  return ALL_ENTRIES.slice().sort((a,b)=>{
+    if(a.pinned && !b.pinned) return -1;
+    if(b.pinned && !a.pinned) return 1;
+    const aCurated = !!a.icon, bCurated = !!b.icon;
+    if(aCurated && !bCurated) return -1;
+    if(bCurated && !aCurated) return 1;
+    return a[lang].localeCompare(b[lang], lang==='el'?'el':'en');
+  });
+}
+function renderGrid(filter){
+  const grid = document.getElementById('country-grid');
+  grid.innerHTML = '';
+  const q = (filter||'').toLowerCase();
+  const source = sortedEntries();
+  source
+    .filter(c => !q || c[lang].toLowerCase().includes(q) || c.cities.some(city => city[lang].toLowerCase().includes(q)))
+    .forEach(c => {
+      const btn = document.createElement('button');
+      const mCity = matchCity(c, filter);
+      const isActive = selectedCountry && selectedCountry.id===c.id && (!mCity || (selectedCity && selectedCity.tz===mCity.tz));
+      btn.className = 'country-btn' + (isActive ? ' active' : '') + (c.pinned ? ' pinned' : '');
+      const label = (mCity && !mCity.primary) ? `${c.flag} ${mCity[lang]} <span style="opacity:.6;font-weight:400;">— ${c[lang]}</span>` : `${c.flag} ${c[lang]}`;
+      btn.innerHTML = `<span>${label}</span>`;
+      btn.onclick = () => selectCountry(c, mCity);
+      grid.appendChild(btn);
+    });
+}
+function selectCountry(c, cityOverride){
+  selectedCountry = c;
+  selectedCity = cityOverride || c.cities.find(x=>x.primary) || c.cities[0];
+  renderGrid(document.getElementById('search').value);
+  renderSpotlight();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function closeSpotlight(){
+  selectedCountry = null;
+  selectedCity = null;
+  renderGrid(document.getElementById('search').value);
+  renderSpotlight();
+}
+function renderSpotlight(){
+  const t = I18N[lang];
+  const el = document.getElementById('spotlight');
+  if(!selectedCountry){
+    el.innerHTML = `<div class="spotlight-empty" id="spotlight-empty">${t.spotlightEmpty}</div>`;
+    return;
+  }
+  const c = selectedCountry;
+  const primary = selectedCity || c.cities.find(x=>x.primary) || c.cities[0];
+  const icon = ICONS[c.icon] || GENERIC_ICON;
+  const colors = c.colors || paletteFor(c.id);
+  const now = new Date();
+  const diffMin = tzOffsetMinutes(primary.tz, now) - tzOffsetMinutes(localTz, now);
+  let diffLabel;
+  if(Math.abs(diffMin) < 1){ diffLabel = t.diffSame; }
+  else{
+    const h = Math.floor(Math.abs(diffMin)/60), m = Math.round(Math.abs(diffMin)%60);
+    const hm = m ? `${h}h ${m}m` : `${h}h`;
+    diffLabel = `${hm} ${diffMin>0 ? t.diffAhead : t.diffBehind}`;
+  }
+  const dtf = new Intl.DateTimeFormat('en-US', {timeZone:primary.tz, timeZoneName:'shortOffset'});
+  const offsetPart = dtf.formatToParts(now).find(p=>p.type==='timeZoneName');
+  const offsetLabel = offsetPart ? offsetPart.value : '';
+  const dst = dstInfo(primary.tz);
+  const dstLabel = !dst.observesDST ? t.dstNever : (dst.isDSTnow ? t.dstYesNow : t.dstNoNow);
+  const sun = sunTimes(primary.lat, primary.lon, primary.tz);
+
+  let siblingsHtml = '';
+  const otherCities = c.cities.filter(x => x.tz !== primary.tz);
+  if(otherCities.length > 0){
+    const chips = otherCities.map(city=>{
+      const cDiffMin = tzOffsetMinutes(city.tz, now) - tzOffsetMinutes(primary.tz, now);
+      const sign = cDiffMin===0 ? '' : (cDiffMin>0 ? '+' : '');
+      const hrs = cDiffMin/60;
+      return `<div class="sibling-chip"><b>${city[lang]}</b>: ${fmtTime(city.tz)} (${sign}${hrs}h)</div>`;
+    }).join('');
+    siblingsHtml = `<div class="sibling-row">${chips}</div>`;
+  } else {
+    siblingsHtml = `<div class="sibling-row"><div class="sibling-chip">${t.singleTz}</div></div>`;
+  }
+
+  el.innerHTML = `
+    <div class="spotlight-card">
+      <div class="spotlight-bg" style="background:linear-gradient(135deg, ${colors[0]}, ${colors[1]});"></div>
+      <div class="spotlight-icon"><svg viewBox="0 0 240 160">${icon}</svg></div>
+      <button class="spotlight-close" onclick="closeSpotlight()">✕</button>
+      <div class="spotlight-inner">
+        <div class="spotlight-name">${c.flag} ${c[lang]} — ${primary[lang]}</div>
+        <div class="spotlight-time" id="spotlight-time">${fmtTime(primary.tz)}</div>
+        <div class="spotlight-date">${fmtDate(primary.tz)}</div>
+        <div class="spotlight-meta">
+          <span>${t.utcLabel}: ${offsetLabel}</span>
+          <span>${diffLabel}</span>
+          <span>${t.sunrise}: ${sun.sunrise==='never-rises'?t.neverRises:(sun.sunrise==='never-sets'?t.neverSets:sun.sunrise)}</span>
+          <span>${t.sunset}: ${sun.sunset==='never-rises'?t.neverRises:(sun.sunset==='never-sets'?t.neverSets:sun.sunset)}</span>
+        </div>
+        <div class="spotlight-meta"><span>${dstLabel}</span></div>
+        ${siblingsHtml}
+      </div>
+    </div>
+  `;
+}
+
+let youCityOverride = null;
+function populateYouCitySelect(){
+  const sel = document.getElementById('you-city');
+  sel.innerHTML = '';
+  const optAuto = document.createElement('option');
+  optAuto.value = ''; optAuto.textContent = lang==='el' ? 'Αυτόματο' : 'Automatic';
+  sel.appendChild(optAuto);
+  ALL_ENTRIES.forEach(c=>{
+    c.cities.forEach(city=>{
+      const opt = document.createElement('option');
+      opt.value = city.tz;
+      opt.textContent = `${c.flag} ${city[lang]}`;
+      sel.appendChild(opt);
+    });
+  });
+  sel.value = youCityOverride || '';
+}
+function findCityByTz(tz){
+  for(const c of ALL_ENTRIES){ for(const city of c.cities){ if(city.tz === tz) return city; } }
+  return null;
+}
+function getYouCity(){
+  if(youCityOverride) return findCityByTz(youCityOverride);
+  const match = findCityByTz(localTz);
+  if(match) return match;
+  return COUNTRIES[0].cities[0];
+}
+function renderYouPanel(){
+  const t = I18N[lang];
+  document.getElementById('you-clock').textContent = fmtTime(localTz);
+  document.getElementById('you-date').textContent = fmtDate(localTz);
+  document.getElementById('you-tz').textContent = localTz.replace('_',' ');
+  const city = getYouCity();
+  const sun = sunTimes(city.lat, city.lon, localTz);
+  document.getElementById('you-sunrise').textContent = sun.sunrise==='never-rises'?t.neverRises:(sun.sunrise==='never-sets'?t.neverSets:sun.sunrise);
+  document.getElementById('you-sunset').textContent = sun.sunset==='never-rises'?t.neverRises:(sun.sunset==='never-sets'?t.neverSets:sun.sunset);
+  const dst = dstInfo(localTz);
+  document.getElementById('you-dst').textContent = !dst.observesDST ? t.dstNever : (dst.isDSTnow ? t.dstYesNow : t.dstNoNow);
+}
+document.getElementById('you-city').addEventListener('change', e=>{
+  youCityOverride = e.target.value || null;
+  renderYouPanel();
+});
+
+function renderStatic(){
+  const t = I18N[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+    const key = el.getAttribute('data-i18n-placeholder');
+    if(t[key] !== undefined) el.placeholder = t[key];
+  });
+  document.getElementById('html-root').lang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.getElementById('btn-el').classList.toggle('active', lang==='el');
+  renderGrid(document.getElementById('search').value);
+  renderSpotlight();
+  renderYouPanel();
+  populateYouCitySelect();
+}
+function setLang(l){ lang = l; renderStatic(); }
+
+document.getElementById('search').addEventListener('input', e => renderGrid(e.target.value));
+
+function tick(){
+  document.getElementById('you-clock').textContent = fmtTime(localTz);
+  const st = document.getElementById('spotlight-time');
+  if(st && selectedCity){
+    st.textContent = fmtTime(selectedCity.tz);
+  }
+}
+setInterval(tick, 1000);
+renderStatic();
+tick();
+</script>
+</body>
+</html>
