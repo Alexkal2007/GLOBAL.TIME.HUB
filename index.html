@@ -117,6 +117,14 @@
     padding:8px 10px; border-radius:8px; font-family:'Space Grotesk',sans-serif; font-size:13px;
   }
 
+  /* ---- info section ---- */
+  .info-box{
+    margin-top:22px; padding-top:18px; border-top:1px solid var(--card-border);
+    color:var(--ink-muted); font-size:13.5px; line-height:1.6;
+  }
+  .info-box p{margin:0 0 8px;}
+  .info-box p:last-child{margin-bottom:0;}
+
   .search-row input{
     width:100%; background:rgba(255,255,255,0.5); border:1px solid var(--card-border); color:var(--ink);
     font-family:'Space Grotesk',sans-serif; font-size:15px; padding:12px 16px; border-radius:12px; outline:none; margin-bottom:16px;
@@ -194,6 +202,11 @@
         <label class="you-tz" data-i18n="youCityLabel" for="you-city">If this isn't quite right, pick the closest city:</label><br>
         <select id="you-city"></select>
       </div>
+    </div>
+    
+    <div class="info-box">
+      <p data-i18n="toolExplanation">Το <b>Global.Time.Hub</b> είναι ένα ζωντανό παγκόσμιο εργαλείο ώρας. Υπολογίζει απευθείας στον browser σου την ακριβή τοπική ώρα, την ημερομηνία, τη διαφορά UTC, το καθεστώς θερινής/χειμερινής ώρας, καθώς και τους ακριβείς χρόνους ανατολής και δύσης του ηλίου για εκατοντάδες πόλεις στον κόσμο.</p>
+      <p data-i18n="toolBenefits">Σου επιτρέπει να συντονίζεις εύκολα διεθνείς συναντήσεις, να παρακολουθείς ταξιδιωτικούς προορισμούς και να γνωρίζεις πάντα τη διαφορά ώρας με οποιαδήποτε χώρα, άμεσα και χωρίς καθυστερήσεις.</p>
     </div>
   </div>
 
@@ -341,8 +354,8 @@ const EXTRA_CITIES = [
   {id:'tn', flag:'🇹🇳', en:'Tunisia', el:'Τυνησία', cities:[{en:'Tunis', el:'Τύνιδα', tz:'Africa/Tunis', lat:36.8065, lon:10.1815, primary:true}]},
   {id:'et', flag:'🇪🇹', en:'Ethiopia', el:'Αιθιοπία', cities:[{en:'Addis Ababa', el:'Αντίς Αμπέμπα', tz:'Africa/Addis_Ababa', lat:9.0300, lon:38.7400, primary:true}]},
   {id:'gh', flag:'🇬🇭', en:'Ghana', el:'Γκάνα', cities:[{en:'Accra', el:'Άκρα', tz:'Africa/Accra', lat:5.6037, lon:-0.1870, primary:true}]},
-  {id:'tza', flag:'🇹🇿', en:'Tanzania', el:'Τανζανία', cities:[{en:'Dar es Salaam', el:'Νταρ ες Σαλάμ', tz:'Africa/Dar_es_Salaam', lat:-6.7924, lon:39.2083, primary:true}]},
-  {id:'nz', flag:'🇳🇿', en:'New Zealand', el:'Νέα Ζηλανδία', cities:[{en:'Wellington', el:'Ουέλινγκτον', tz:'Pacific/Auckland', lat:-41.2865, lon:174.7762, primary:true}]},
+  {id:'tza', flag:'🇹ℤ', en:'Tanzania', el:'Τανζανία', cities:[{en:'Dar es Salaam', el:'Νταρ ες Σαλάμ', tz:'Africa/Dar_es_Salaam', lat:-6.7924, lon:39.2083, primary:true}]},
+  {id:'nz', flag:'🇳ℤ', en:'New Zealand', el:'Νέα Ζηλανδία', cities:[{en:'Wellington', el:'Ουέλινγκτον', tz:'Pacific/Auckland', lat:-41.2865, lon:174.7762, primary:true}]},
   {id:'fj', flag:'🇫🇯', en:'Fiji', el:'Φίτζι', cities:[{en:'Suva', el:'Σούβα', tz:'Pacific/Fiji', lat:-18.1416, lon:178.4419, primary:true}]},
 ];
 const ALL_ENTRIES = COUNTRIES.concat(EXTRA_CITIES);
@@ -363,6 +376,8 @@ en: {
   youHeading: 'Your time, right now',
   sunrise: 'Sunrise', sunset: 'Sunset',
   youCityLabel: "If this isn't quite right, pick the closest city:",
+  toolExplanation: '<b>Global.Time.Hub</b> is a live world time tool. It calculates directly in your browser the exact local time, date, UTC offset, daylight saving status, as well as precise sunrise and sunset times for hundreds of cities worldwide.',
+  toolBenefits: 'It allows you to effortlessly coordinate international meetings, track travel destinations, and always know the exact time difference with any country, instantly and without delays.',
   worldHeading: 'World clock',
   worldLede: 'Search or tap a country — its exact time, date, and sunrise/sunset will open at the very top of the page.',
   searchPlaceholder: 'Search for a country or city…',
@@ -387,6 +402,8 @@ el: {
   youHeading: 'Η ώρα σου, αυτή τη στιγμή',
   sunrise: 'Ανατολή', sunset: 'Δύση',
   youCityLabel: 'Αν αυτό δεν είναι ακριβές, διάλεξε την πλησιέστερη πόλη:',
+  toolExplanation: 'Το <b>Global.Time.Hub</b> είναι ένα ζωντανό παγκόσμιο εργαλείο ώρας. Υπολογίζει απευθείας στον browser σου την ακριβή τοπική ώρα, την ημερομηνία, τη διαφορά UTC, το καθεστώς θερινής/χειμερινής ώρας, καθώς και τους ακριβείς χρόνους ανατολής και δύσης του ηλίου για εκατοντάδες πόλεις στον κόσμο.',
+  toolBenefits: 'Σου επιτρέπει να συντονίζεις εύκολα διεθνείς συναντήσεις, να παρακολουθείς ταξιδιωτικούς προορισμούς και να γνωρίζεις πάντα τη διαφορά ώρας με οποιαδήποτε χώρα, άμεσα και χωρίς καθυστερήσεις.',
   worldHeading: 'Παγκόσμιο ρολόι',
   worldLede: 'Αναζήτησε ή πάτησε μια χώρα — η ακριβής ώρα, η ημερομηνία και η ανατολή/δύση θα ανοίξουν ακριβώς στην κορυφή της σελίδας.',
   searchPlaceholder: 'Αναζήτησε χώρα ή πόλη…',
