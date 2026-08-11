@@ -56,6 +56,12 @@
     font-weight:700; font-size:14px; padding:11px 20px; border-radius:10px; cursor:pointer;
   }
   .btn.secondary{background:var(--teal);}
+  .info-box{
+    margin-top:22px; padding-top:18px; border-top:1px solid var(--card-border);
+    color:var(--ink-muted); font-size:13.5px; line-height:1.6;
+  }
+  .info-box p{margin:0 0 8px;}
+  .info-box p:last-child{margin-bottom:0;}
   .back-link{display:inline-block; margin-top:10px; color:var(--terracotta); font-size:14px; text-decoration:none;}
   .back-link:hover{text-decoration:underline;}
 </style>
@@ -87,6 +93,11 @@
     </div>
   </div>
 
+  <div class="info-box">
+    <p data-i18n="infoExplanation">Το εργαλείο <b>Countdown</b> εμφανίζει μια ζωντανή αντίστροφη μέτρηση σε ημέρες, ώρες, λεπτά και δευτερόλεπτα μέχρι την έλευση της Πρωτοχρονιάς ή οποιασδήποτε άλλης δικής σου σημαντικής ημερομηνίας.</p>
+    <p data-i18n="infoHowItWorks"><b>Πώς λειτουργεί:</b> Συγκρίνει συνεχώς την τρέχουσα τοπική ώρα της συσκευής σου με την ημερομηνία-στόχο που έχει οριστεί. Υπολογίζει τη διαφορά χρόνου σε real-time και την ανανεώνει κάθε δευτερόλεπτο, χωρίς να απαιτείται επαναφόρτωση της σελίδας.</p>
+  </div>
+
   <a class="back-link" data-i18n="back" href="exact-time.html">← Back to the clock</a>
 </div>
 <script>
@@ -95,13 +106,17 @@ en: {
   brand:'Global<em>.Time.Hub</em>', h1:'Countdown', lede:'Counting down to New Year by default — or set your own event below.',
   customHeading:'Set your own countdown', cdNamePlaceholder:'Event name', cdSetBtn:'Set countdown', cdNewYearBtn:'Back to New Year',
   back:'← Back to the clock', units:['Days','Hours','Minutes','Seconds'], newYearLabel:'New Year', yourEventLabel:'Your event',
-  reached: "This moment has arrived!"
+  reached: "This moment has arrived!",
+  infoExplanation: 'The <b>Countdown</b> tool displays a real-time timer in days, hours, minutes, and seconds leading up to New Year’s Day or any custom event of your choice.',
+  infoHowItWorks: '<b>How it works:</b> It continuously compares your device’s current system time against the specified target date. The remaining time difference is updated every second in real-time without requiring a page refresh.'
 },
 el: {
   brand:'Global<em>.Time.Hub</em>', h1:'Αντίστροφη μέτρηση', lede:'Μέτρηση αντίστροφα για την Πρωτοχρονιά — ή όρισε το δικό σου γεγονός παρακάτω.',
   customHeading:'Όρισε τη δική σου μέτρηση', cdNamePlaceholder:'Όνομα γεγονότος', cdSetBtn:'Ορισμός μέτρησης', cdNewYearBtn:'Επιστροφή στην Πρωτοχρονιά',
   back:'← Πίσω στο ρολόι', units:['Ημέρες','Ώρες','Λεπτά','Δευτ.'], newYearLabel:'Πρωτοχρονιά', yourEventLabel:'Το γεγονός σου',
-  reached: "Αυτή η στιγμή έφτασε!"
+  reached: "Αυτή η στιγμή έφτασε!",
+  infoExplanation: 'Το εργαλείο <b>Countdown</b> εμφανίζει μια ζωντανή αντίστροφη μέτρηση σε ημέρες, ώρες, λεπτά και δευτερόλεπτα μέχρι την έλευση της Πρωτοχρονιάς ή οποιασδήποτε άλλης δικής σου σημαντικής ημερομηνίας.',
+  infoHowItWorks: '<b>Πώς λειτουργεί:</b> Συγκρίνει συνεχώς την τρέχουσα τοπική ώρα της συσκευής σου με την ημερομηνία-στόχο που έχει οριστεί. Υπολογίζει τη διαφορά χρόνου σε real-time και την ανανεώνει κάθε δευτερόλεπτο, χωρίς να απαιτείται επαναφόρτωση της σελίδας.'
 }
 };
 let lang = 'en';
