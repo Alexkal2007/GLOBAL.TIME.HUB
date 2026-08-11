@@ -51,6 +51,12 @@
   .back-link{display:inline-block; margin-top:24px; color:var(--terracotta); font-size:14px; text-decoration:none;}
   .back-link:hover{text-decoration:underline;}
   .auto-note{color:var(--ink-muted); font-size:12.5px; margin-top:16px;}
+  .info-box{
+    margin-top:22px; padding-top:18px; border-top:1px solid var(--card-border);
+    color:var(--ink-muted); font-size:13.5px; line-height:1.6;
+  }
+  .info-box p{margin:0 0 8px;}
+  .info-box p:last-child{margin-bottom:0;}
 </style>
 </head>
 <body>
@@ -74,14 +80,24 @@
     <button class="today-btn" onclick="goToday()" data-i18n="todayBtn">Jump to today</button>
     <div class="auto-note" data-i18n="autoNote">This calendar checks the date automatically and refreshes itself when a new day begins.</div>
   </div>
+
+  <div class="info-box">
+    <p data-i18n="infoExplanation">Το <b>Calendar</b> προσφέρει μια καθαρή, διαδραστική προβολή του μηνιαίου ημερολογίου, επιτρέποντάς σου να πλοηγείσαι εύκολα μεταξύ των μηνών και να βλέπεις άμεσα την τρέχουσα ημέρα.</p>
+    <p data-i18n="infoHowItWorks"><b>Πώς λειτουργεί:</b> Υπολογίζει δυναμικά τις ημέρες και τις εβδομάδες με βάση το τοπικό σύστημα ώρας της συσκευής σου. Παράλληλα, εκτελεί αυτόματο έλεγχο στο παρασκήνιο ώστε να ανανεώνει την επισήμανση της σημερινής ημέρας αμέσως μόλις αλλάξει η ημερομηνία τα μεσάνυχτα.</p>
+  </div>
+
   <a class="back-link" data-i18n="back" href="exact-time.html">← Back to the clock</a>
 </div>
 <script>
 const I18N = {
 en: { brand:'Global<em>.Time.Hub</em>', h1:'Calendar', lede:'The current month, always up to date — it refreshes on its own at midnight.', todayBtn:'Jump to today', autoNote:'This calendar checks the date automatically and refreshes itself when a new day begins.', back:'← Back to the clock',
-  dow:['M','T','W','T','F','S','S'] },
+  dow:['M','T','W','T','F','S','S'],
+  infoExplanation: 'The <b>Calendar</b> provides a clean, interactive view of the monthly calendar, allowing you to easily navigate between months and instantly highlight the current day.',
+  infoHowItWorks: '<b>How it works:</b> It dynamically calculates days and weeks using your device’s local system clock. Additionally, it runs an automatic background check to refresh the "today" highlight as soon as the date changes at midnight.' },
 el: { brand:'Global<em>.Time.Hub</em>', h1:'Ημερολόγιο', lede:'Ο τρέχων μήνας, πάντα ενημερωμένος — ανανεώνεται μόνος του τα μεσάνυχτα.', todayBtn:'Μετάβαση στο σήμερα', autoNote:'Αυτό το ημερολόγιο ελέγχει αυτόματα την ημερομηνία και ανανεώνεται μόνο του όταν ξεκινάει νέα μέρα.', back:'← Πίσω στο ρολόι',
-  dow:['Δ','Τ','Τ','Π','Π','Σ','Κ'] }
+  dow:['Δ','Τ','Τ','Π','Π','Σ','Κ'],
+  infoExplanation: 'Το <b>Calendar</b> προσφέρει μια καθαρή, διαδραστική προβολή του μηνιαίου ημερολογίου, επιτρέποντάς σου να πλοηγείσαι εύκολα μεταξύ των μηνών και να βλέπεις άμεσα την τρέχουσα ημέρα.',
+  infoHowItWorks: '<b>Πώς λειτουργεί:</b> Υπολογίζει δυναμικά τις ημέρες και τις εβδομάδες με βάση το τοπικό σύστημα ώρας της συσκευής σου. Παράλληλα, εκτελεί αυτόματο έλεγχο στο παρασκήνιο ώστε να ανανεώνει την επισήμανση της σημερινής ημέρας αμέσως μόλις αλλάξει η ημερομηνία τα μεσάνυχτα.' }
 };
 let lang = 'en';
 let calDate = new Date();
