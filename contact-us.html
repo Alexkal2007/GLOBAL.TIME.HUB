@@ -1,83 +1,129 @@
 <!DOCTYPE html>
-<html lang="el">
+<html lang="en" id="html-root">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - Global Time Hub</title>
-    <style>
-        .contact-container {
-            max-width: 650px;
-            margin: 40px auto;
-            padding: 30px;
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333333;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .contact-container h1 {
-            color: #1a202c;
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .contact-container h2 {
-            color: #2b6cb0;
-            font-size: 1.25rem;
-            margin-top: 0;
-            margin-bottom: 20px;
-        }
-
-        .contact-container p {
-            margin-bottom: 16px;
-        }
-
-        .contact-email {
-            background-color: #f7fafc;
-            border-left: 4px solid #3182ce;
-            padding: 12px 16px;
-            margin: 20px 0;
-            font-weight: bold;
-        }
-
-        .contact-email a {
-            color: #3182ce;
-            text-decoration: none;
-        }
-
-        .contact-email a:hover {
-            text-decoration: underline;
-        }
-
-        .thank-you {
-            font-weight: bold;
-            color: #2d3748;
-            margin-top: 25px;
-        }
-    </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6567575728836416"
+     crossorigin="anonymous">
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — Global.Time.Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1:#f6efe1; --bg-2:#efe2c8;
+      --ink:#2b2418; --ink-muted:#7d715c;
+      --card:rgba(246,239,225,0.96); --card-border:rgba(43,36,24,0.14);
+      --terracotta:#c85a30; --teal:#2f6f5e; --terracotta-dim:rgba(200,90,48,0.25);
+    }
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+    body{
+      background:
+        radial-gradient(ellipse 55% 35% at 10% -5%, rgba(200,90,48,0.10), transparent 60%),
+        radial-gradient(ellipse 50% 35% at 100% 0%, rgba(47,111,94,0.10), transparent 60%),
+        linear-gradient(180deg, var(--bg-1), var(--bg-2) 60%, var(--bg-1) 100%);
+      color:var(--ink); font-family:'Space Grotesk', sans-serif; min-height:100vh;
+    }
+    .wrap{max-width:760px; margin:0 auto; padding:56px 24px 80px; position:relative; z-index:1;}
+    nav{display:flex; align-items:center; justify-content:space-between; margin-bottom:40px;}
+    .brand{font-family:'DM Serif Display',serif; font-weight:700; font-size:20px; letter-spacing:-0.01em; text-decoration:none; color:var(--ink);}
+    .brand em{color:var(--terracotta); font-style:normal;}
+    .lang-toggle{display:flex; background:rgba(0,0,0,0.25); border-radius:10px; padding:4px; gap:2px;}
+    .lang-toggle button{border:none; background:transparent; color:var(--ink-muted); font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:13px; padding:7px 14px; border-radius:7px; cursor:pointer;}
+    .lang-toggle button.active{background:var(--terracotta); color:#241a05;}
+    h1{font-family:'DM Serif Display', serif; font-weight:600; font-size:clamp(28px, 4.5vw, 42px); line-height:1.1; margin:0 0 8px;}
+    .lede{color:var(--ink-muted); margin:0 0 40px; line-height:1.6;}
+    .panel{background:var(--card); border:1px solid var(--card-border); border-radius:20px; padding:30px; margin-bottom:18px;}
+    .panel h2{font-family:'DM Serif Display',serif; font-weight:600; font-size:19px; margin:0 0 12px; color:var(--teal);}
+    .panel p{color:var(--ink-muted); line-height:1.7; font-size:15px; margin:0 0 14px;}
+    .panel p:last-child{margin-bottom:0;}
+    .contact-email{background:rgba(200,90,48,0.08); border-left:4px solid var(--terracotta); padding:14px 18px; margin:20px 0; border-radius:0 12px 12px 0; font-family:'IBM Plex Mono', monospace; font-weight:600;}
+    .contact-email a{color:var(--terracotta); text-decoration:none;}
+    .contact-email a:hover{text-decoration:underline;}
+    .back-link{display:inline-block; margin-top:20px; color:var(--terracotta); font-size:14px; text-decoration:none; font-weight:600;}
+    .back-link:hover{text-decoration:underline;}
+    @media (max-width:520px){ .panel{padding:22px;} nav{flex-direction:column; gap:14px; align-items:flex-start;} }
+  </style>
 </head>
 <body>
+<div class="wrap">
+  <nav>
+    <a class="brand" href="index.html">Global<em>.Time.Hub</em></a>
+    <div class="lang-toggle">
+      <button id="btn-en" class="active" onclick="setLang('en')">EN</button>
+      <button id="btn-el" onclick="setLang('el')">ΕΛ</button>
+    </div>
+  </nav>
 
-    <section class="contact-container">
-        <h1>Contact Us</h1>
-        <h2>We’d love to hear from you!</h2>
-        
-        <p>If you have any questions, feedback, suggestions, or need help using Global Time Hub, please feel free to contact us.</p>
-        
-        <p>Global Time Hub is designed to make it easy to check the current time around the world, compare time zones, plan international meetings, and use helpful time-related tools.</p>
-        
-        <p>If you notice an error, have a suggestion for improving our tools, or experience a technical issue, please let us know. We appreciate your feedback and use it to improve Global Time Hub.</p>
-        
-        <div class="contact-email">
-            Email: <a href="mailto:globaltimehub@gmail.com">globaltimehub@gmail.com</a>
-        </div>
-        
-        <p>We aim to respond to messages as soon as possible.</p>
-        
-        <p class="thank-you">Thank you for using Global Time Hub!</p>
-    </section>
+  <h1 data-i18n="h1">Contact Us</h1>
+  <p class="lede" data-i18n="lede">We’d love to hear from you!</p>
 
+  <div id="sections"></div>
+
+  <a class="back-link" data-i18n="back" href="index.html">← Back to the clock</a>
+</div>
+
+<script>
+const I18N = {
+en: {
+  h1: 'Contact Us',
+  lede: 'We’d love to hear from you!',
+  back: '← Back to the clock',
+  sections: [
+    ['Get in touch',
+      "If you have any questions, feedback, suggestions, or need help using Global Time Hub, please feel free to contact us."],
+    ['What we offer',
+      "Global Time Hub is designed to make it easy to check the current time around the world, compare time zones, plan international meetings, and use helpful time-related tools."],
+    ['Feedback & Support',
+      "If you notice an error, have a suggestion for improving our tools, or experience a technical issue, please let us know. We appreciate your feedback and use it to improve Global Time Hub."],
+    ['Direct Email',
+      'Email: <a href="mailto:globaltimehub@gmail.com">globaltimehub@gmail.com</a><br><br>We aim to respond to messages as soon as possible.'],
+    ['Thank You',
+      "Thank you for using Global Time Hub!"]
+  ]
+},
+el: {
+  h1: 'Επικοινωνία',
+  lede: 'Θα χαρούμε πολύ να επικοινωνήσετε μαζί μας!',
+  back: '← Πίσω στο ρολόι',
+  sections: [
+    ['Επικοινωνήστε μαζί μας',
+      "Αν έχετε οποιαδήποτε ερώτηση, σχόλιο, προτάσεις ή χρειάζεστε βοήθεια στη χρήση του Global Time Hub, μη διστάσετε να επικοινωνήσετε μαζί μας."],
+    ['Τι προσφέρουμε',
+      "Το Global Time Hub δημιουργήθηκε για να διευκολύνει τον έλεγχο της τρέχουσας ώρας σε όλο τον κόσμο, τη σύγκριση ζωνών ώρας, τον προγραμματισμό διεθνών συναντήσεων και τη χρήση χρήσιμων εργαλείων ώρας."],
+    ['Σχόλια & Υποστήριξη',
+      "Αν παρατηρήσετε κάποιο σφάλμα, έχετε κάποια πρόταση για τη βελτίωση των εργαλείων μας ή αντιμετωπίσετε κάποιο τεχνικό πρόβλημα, ενημερώστε μας. Εκτιμούμε τα σχόλιά σας και τα χρησιμοποιούμε για να βελτιώνουμε το Global Time Hub."],
+    ['Άμεσο Email',
+      'Email: <a href="mailto:globaltimehub@gmail.com">globaltimehub@gmail.com</a><br><br>Στόχος μας είναι να απαντάμε στα μηνύματα όσο το δυνατόν γρηγορότερα.'],
+    ['Ευχαριστούμε',
+      "Ευχαριστούμε που χρησιμοποιείτε το Global Time Hub!"]
+  ]
+}
+};
+
+let lang = 'en';
+function renderStatic(){
+  const t = I18N[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(t[key] !== undefined) el.innerHTML = t[key];
+  });
+  
+  document.getElementById('sections').innerHTML = t.sections.map(s => {
+    if(s[0] === 'Direct Email' || s[0] === 'Άμεσο Email') {
+      return `<div class="panel"><h2>${s[0]}</h2><div class="contact-email">${s[1]}</div></div>`;
+    }
+    return `<div class="panel"><h2>${s[0]}</h2><p>${s[1]}</p></div>`;
+  }).join('');
+
+  document.getElementById('html-root').lang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.getElementById('btn-el').classList.toggle('active', lang==='el');
+}
+function setLang(l){ lang = l; renderStatic(); }
+renderStatic();
+</script>
 </body>
 </html>
