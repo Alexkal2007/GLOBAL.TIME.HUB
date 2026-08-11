@@ -251,10 +251,11 @@
   <footer>
     <div data-i18n="footerNote">Times, sunrise/sunset, and daylight saving status are all calculated live in your browser.</div>
     <div class="flinks">
-      <a href="about-us-clock.html" data-i18n="linkAbout">About Us</a>
-      <a href="terms-of-use-clock.html" data-i18n="linkTerms">Terms of Use</a>
-      <a href="privacy-policy-clock.html" data-i18n="linkPrivacy">Privacy Policy</a>
-      <a href="cookie-policy-clock.html" data-i18n="linkCookies">Cookie Policy</a>
+      <a href="about-us-clock.html" target="_blank" data-i18n="linkAbout">About Us</a>
+      <a href="contact-us-clock.html" target="_blank" data-i18n="linkContact">Contact Us</a>
+      <a href="terms-of-use-clock.html" target="_blank" data-i18n="linkTerms">Terms of Use</a>
+      <a href="privacy-policy-clock.html" target="_blank" data-i18n="linkPrivacy">Privacy Policy</a>
+      <a href="cookie-policy-clock.html" target="_blank" data-i18n="linkCookies">Cookie Policy</a>
     </div>
   </footer>
 </div>
@@ -383,8 +384,8 @@ const EXTRA_CITIES = [
   {id:'tn', flag:'🇹🇳', en:'Tunisia', el:'Τυνησία', cities:[{en:'Tunis', el:'Τύνιδα', tz:'Africa/Tunis', lat:36.8065, lon:10.1815, primary:true}]},
   {id:'et', flag:'🇪🇹', en:'Ethiopia', el:'Αιθιοπία', cities:[{en:'Addis Ababa', el:'Αντίς Αμπέμπα', tz:'Africa/Addis_Ababa', lat:9.0300, lon:38.7400, primary:true}]},
   {id:'gh', flag:'🇬🇭', en:'Ghana', el:'Γκάνα', cities:[{en:'Accra', el:'Άκρα', tz:'Africa/Accra', lat:5.6037, lon:-0.1870, primary:true}]},
-  {id:'tza', flag:'🇹🇿', en:'Tanzania', el:'Τανζανία', cities:[{en:'Dar es Salaam', el:'Νταρ ες Σαλάμ', tz:'Africa/Dar_es_Salaam', lat:-6.7924, lon:39.2083, primary:true}]},
-  {id:'nz', flag:'🇳🇿', en:'New Zealand', el:'Νέα Ζηλανδία', cities:[{en:'Wellington', el:'Ουέλινγκτον', tz:'Pacific/Auckland', lat:-41.2865, lon:174.7762, primary:true}]},
+  {id:'tza', flag:'🇹ℤ', en:'Tanzania', el:'Τανζανία', cities:[{en:'Dar es Salaam', el:'Νταρ ες Σαλάμ', tz:'Africa/Dar_es_Salaam', lat:-6.7924, lon:39.2083, primary:true}]},
+  {id:'nz', flag:'🇳ℤ', en:'New Zealand', el:'Νέα Ζηλανδία', cities:[{en:'Wellington', el:'Ουέλινγκτον', tz:'Pacific/Auckland', lat:-41.2865, lon:174.7762, primary:true}]},
   {id:'fj', flag:'🇫🇯', en:'Fiji', el:'Φίτζι', cities:[{en:'Suva', el:'Σούβα', tz:'Pacific/Fiji', lat:-18.1416, lon:178.4419, primary:true}]},
 ];
 const ALL_ENTRIES = COUNTRIES.concat(EXTRA_CITIES);
@@ -424,7 +425,7 @@ en: {
     {q: 'Does Global.Time.Hub store any of my personal location data?', a: 'No, all calculations are executed locally within your web browser. No personal data or location tracking details are collected or stored.'}
   ],
   footerNote: 'Times, sunrise/sunset, and daylight saving status are all calculated live in your browser.',
-  linkAbout: 'About Us', linkTerms: 'Terms of Use', linkPrivacy: 'Privacy Policy', linkCookies: 'Cookie Policy',
+  linkAbout: 'About Us', linkContact: 'Contact Us', linkTerms: 'Terms of Use', linkPrivacy: 'Privacy Policy', linkCookies: 'Cookie Policy',
   diffAhead: 'ahead of you', diffBehind: 'behind you', diffSame: 'same time as you',
   utcLabel: 'UTC offset',
   dstYesNow: 'Currently observing Daylight Saving Time (summer time).',
@@ -463,7 +464,7 @@ el: {
     {q: 'Αποθηκεύει το Global.Time.Hub τα προσωπικά μου δεδομένα τοποθεσίας;', a: 'Όχι, όλοι οι υπολογισμοί εκτελούνται τοπικά στη συσκευή σας. Δεν συλλέγεται ούτε αποθηκεύεται κανένα προσωπικό δεδομένο ή στοιχείο τοποθεσίας.'}
   ],
   footerNote: 'Οι ώρες, η ανατολή/δύση, και η θερινή/χειμερινή ώρα υπολογίζονται ζωντανά μέσα στον browser σου.',
-  linkAbout: 'Σχετικά με εμάς', linkTerms: 'Όροι Χρήσης', linkPrivacy: 'Πολιτική Απορρήτου', linkCookies: 'Πολιτική Cookies',
+  linkAbout: 'Σχετικά με εμάς', linkContact: 'Επικοινωνία', linkTerms: 'Όροι Χρήσης', linkPrivacy: 'Πολιτική Απορρήτου', linkCookies: 'Πολιτική Cookies',
   diffAhead: 'μπροστά από εσένα', diffBehind: 'πίσω από εσένα', diffSame: 'ίδια ώρα με εσένα',
   utcLabel: 'Διαφορά από UTC',
   dstYesNow: 'Αυτή τη στιγμή ισχύει θερινή ώρα.',
