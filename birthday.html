@@ -50,6 +50,12 @@
   }
   .bday-result{margin-top:18px; font-size:17px; font-family:'DM Serif Display',serif;}
   .bday-result b{color:var(--terracotta); font-style:normal;}
+  .info-box{
+    margin-top:22px; padding-top:18px; border-top:1px solid var(--card-border);
+    color:var(--ink-muted); font-size:13.5px; line-height:1.6;
+  }
+  .info-box p{margin:0 0 8px;}
+  .info-box p:last-child{margin-bottom:0;}
   .back-link{display:inline-block; margin-top:24px; color:var(--terracotta); font-size:14px; text-decoration:none;}
   .back-link:hover{text-decoration:underline;}
 </style>
@@ -71,6 +77,11 @@
       <button class="btn" onclick="calcBirthday()" data-i18n="bdayBtn">Find out</button>
     </div>
     <div class="bday-result" id="bday-result"></div>
+
+    <div class="info-box">
+      <p data-i18n="infoExplanation">Το <b>Birthday Finder</b> υπολογίζει με ακρίβεια την ημέρα της εβδομάδας (Δευτέρα, Τρίτη, κ.λπ.) που αντιστοιχεί σε οποιαδήποτε ημερομηνία γέννησης ή ιστορικό γεγονός.</p>
+      <p data-i18n="infoHowItWorks"><b>Πώς λειτουργεί:</b> Χρησιμοποιεί το Γρηγοριανό ημερολόγιο και μαθηματικούς αλγόριθμους υπολογισμού ημερών (όπως ο υπολογισμός Zeller / modular arithmetic), λαμβάνοντας υπόψη τα δίσεκτα έτη. Όλοι οι υπολογισμοί γίνονται τοπικά στη συσκευή σου, χωρίς να αποθηκεύονται τα προσωπικά σου δεδομένα.</p>
+    </div>
   </div>
   <a class="back-link" data-i18n="back" href="exact-time.html">← Back to the clock</a>
 </div>
@@ -83,6 +94,8 @@ en: {
   bdayBtn: 'Find out',
   back: '← Back to the clock',
   result: (dateStr, weekday) => `${dateStr} was a <b>${weekday}</b>.`,
+  infoExplanation: 'The <b>Birthday Finder</b> calculates the exact day of the week (Monday, Tuesday, etc.) corresponding to any birth date or historical event.',
+  infoHowItWorks: '<b>How it works:</b> It utilizes the Gregorian calendar system and date-calculation algorithms (like Zeller’s congruence / modular arithmetic), taking leap years into account. All calculations are processed locally on your device, ensuring complete privacy.'
 },
 el: {
   brand: 'Global<em>.Time.Hub</em>',
@@ -91,6 +104,8 @@ el: {
   bdayBtn: 'Μάθε το',
   back: '← Πίσω στο ρολόι',
   result: (dateStr, weekday) => `Στις ${dateStr} ήταν <b>${weekday}</b>.`,
+  infoExplanation: 'Το <b>Birthday Finder</b> υπολογίζει με ακρίβεια την ημέρα της εβδομάδας (Δευτέρα, Τρίτη, κ.λπ.) που αντιστοιχεί σε οποιαδήποτε ημερομηνία γέννησης ή ιστορικό γεγονός.',
+  infoHowItWorks: '<b>Πώς λειτουργεί:</b> Χρησιμοποιεί το Γρηγοριανό ημερολόγιο και μαθηματικούς αλγόριθμους υπολογισμού ημερών (όπως ο υπολογισμός Zeller / modular arithmetic), λαμβάνοντας υπόψη τα δίσεκτα έτη. Όλοι οι υπολογισμοί γίνονται τοπικά στη συσκευή σου, χωρίς να αποθηκεύονται τα προσωπικά σου δεδομένα.'
 }
 };
 let lang = 'en';
@@ -113,6 +128,9 @@ function renderStatic(){
   document.getElementById('html-root').lang = lang;
   document.getElementById('btn-en').classList.toggle('active', lang==='en');
   document.getElementById('btn-el').classList.toggle('active', lang==='el');
+  if(document.getElementById('bday-input').value){
+    calcBirthday();
+  }
 }
 function setLang(l){ lang = l; renderStatic(); }
 renderStatic();
